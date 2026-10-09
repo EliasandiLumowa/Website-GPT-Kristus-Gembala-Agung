@@ -6,6 +6,18 @@ const columns = [
   { key: "title", label: "Judul" },
   { key: "speaker", label: "Pengkhotbah" },
   {
+    key: "isHighlight",
+    label: "Highlight",
+    render: (value: unknown) =>
+      value ? (
+        <span className="badge badge-gold" style={{ fontSize: "0.75rem" }}>
+          ⭐ Highlight
+        </span>
+      ) : (
+        <span style={{ color: "var(--color-text-muted)", fontSize: "0.8rem" }}>-</span>
+      ),
+  },
+  {
     key: "date",
     label: "Tanggal",
     render: (value: unknown) =>
@@ -31,6 +43,7 @@ const fields = [
   { key: "speaker", label: "Pengkhotbah", type: "text" as const, required: true, placeholder: "Nama pengkhotbah" },
   { key: "date", label: "Tanggal", type: "date" as const, required: true },
   { key: "youtubeUrl", label: "YouTube URL", type: "url" as const, required: true, placeholder: "https://youtube.com/watch?v=..." },
+  { key: "isHighlight", label: "Tandai sebagai Highlight Khotbah", type: "checkbox" as const },
   { key: "description", label: "Deskripsi", type: "textarea" as const, placeholder: "Deskripsi singkat khotbah" },
   { key: "isPublished", label: "Terbitkan", type: "checkbox" as const },
 ];

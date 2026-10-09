@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Music, Search } from "lucide-react";
+import { Music, Search, Sparkles, FileText } from "lucide-react";
 import prisma from "@/lib/prisma";
 
 export const metadata = {
@@ -58,6 +58,33 @@ export default async function LaguPage({
 
       <section className="section">
         <div className="container">
+          {/* Navigation Tabs */}
+          <div
+            style={{
+              display: "flex",
+              gap: "var(--space-sm)",
+              marginBottom: "var(--space-xl)",
+              borderBottom: "1px solid var(--color-border)",
+              paddingBottom: "var(--space-md)",
+            }}
+          >
+            <Link
+              href="/lagu"
+              className="btn btn-primary"
+              style={{ fontSize: "0.88rem" }}
+            >
+              Semua Lagu
+            </Link>
+            <Link
+              href="/lagu/ciptaan-sendiri"
+              className="btn btn-outline"
+              style={{ fontSize: "0.88rem" }}
+            >
+              <Sparkles size={16} />
+              Lagu Ciptaan Sendiri
+            </Link>
+          </div>
+
           <form action="/lagu" method="GET">
             <div className="search-bar">
               <Search className="search-icon" size={18} />
@@ -93,12 +120,28 @@ export default async function LaguPage({
                         <p className="song-title">{song.title}</p>
                         <p className="song-artist">
                           {song.artist || "Unknown Artist"}
-                          {song.category && (
+                          {song.isOriginal && (
                             <span
                               className="badge badge-gold"
-                              style={{ marginLeft: "var(--space-sm)" }}
+                              style={{ marginLeft: "var(--space-sm)", fontSize: "0.75rem" }}
+                            >
+                              Ciptaan Sendiri
+                            </span>
+                          )}
+                          {song.category && !song.isOriginal && (
+                            <span
+                              className="badge"
+                              style={{ marginLeft: "var(--space-sm)", fontSize: "0.75rem", background: "var(--black-700)" }}
                             >
                               {song.category}
+                            </span>
+                          )}
+                          {song.fileUrl && (
+                            <span
+                              className="badge badge-primary"
+                              style={{ marginLeft: "var(--space-xs)", fontSize: "0.72rem" }}
+                            >
+                              {song.fileUrl.toLowerCase().includes(".pdf") ? "📄 PDF" : "🖼️ Chord"}
                             </span>
                           )}
                         </p>

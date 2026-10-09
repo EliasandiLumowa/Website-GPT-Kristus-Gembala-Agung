@@ -9,16 +9,27 @@ export async function GET(req: NextRequest) {
     const page = parseInt(searchParams.get("page") || "1");
     const limit = parseInt(searchParams.get("limit") || "20");
     const search = searchParams.get("search") || "";
+    const isAdmin = searchParams.get("admin") === "true";
+    const isOriginalParam = searchParams.get("isOriginal");
 
-    const where = search
-      ? {
-          isPublished: true,
-          OR: [
-            { title: { contains: search, mode: "insensitive" as const } },
-            { artist: { contains: search, mode: "insensitive" as const } },
-          ],
-        }
-      : { isPublished: true };
+    const where: Record<string, unknown> = {};
+
+    if (!isAdmin) {
+      where.isPublished = true;
+    }
+
+    if (isOriginalParam === "true") {
+      where.isOriginal = true;
+    } else if (isOriginalParam === "false") {
+      where.isOriginal = false;
+    }
+
+    if (search) {
+      where.OR = [
+        { title: { contains: search, mode: "insensitive" as const } },
+        { artist: { contains: search, mode: "insensitive" as const } },
+      ];
+    }
 
     const [songs, total] = await Promise.all([
       prisma.song.findMany({
@@ -56,6 +67,8 @@ export async function POST(req: NextRequest) {
         lyrics: body.lyrics,
         category: body.category || null,
         youtubeUrl: body.youtubeUrl || null,
+        fileUrl: body.fileUrl || null,
+        isOriginal: Boolean(body.isOriginal),
         isPublished: body.isPublished ?? true,
       },
     });

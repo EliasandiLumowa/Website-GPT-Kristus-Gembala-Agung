@@ -4,12 +4,33 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { Menu, X } from "lucide-react";
+import { Menu, X, ChevronDown } from "lucide-react";
 
-const navItems = [
+interface NavItem {
+  href: string;
+  label: string;
+  children?: { href: string; label: string }[];
+}
+
+const navItems: NavItem[] = [
   { href: "/", label: "Beranda" },
-  { href: "/khotbah", label: "Khotbah" },
-  { href: "/lagu", label: "Lagu & Lyrics" },
+  { href: "/visi-misi", label: "Visi & Misi" },
+  {
+    href: "/khotbah",
+    label: "Khotbah",
+    children: [
+      { href: "/khotbah", label: "History Khotbah" },
+      { href: "/highlight-khotbah", label: "Highlight Khotbah" },
+    ],
+  },
+  {
+    href: "/lagu",
+    label: "Lagu & Lyrics",
+    children: [
+      { href: "/lagu", label: "Semua Lagu" },
+      { href: "/lagu/ciptaan-sendiri", label: "Lagu Ciptaan Sendiri" },
+    ],
+  },
   { href: "/berita", label: "Berita" },
   { href: "/event", label: "Event" },
   { href: "/ulang-tahun", label: "Ulang Tahun" },
@@ -50,17 +71,50 @@ export default function Navbar() {
           </Link>
 
           <ul className={`nav-links ${isOpen ? "open" : ""}`}>
-            {navItems.map((item) => (
-              <li key={item.href}>
-                <Link
-                  href={item.href}
-                  className={pathname === item.href ? "active" : ""}
-                  onClick={() => setIsOpen(false)}
-                >
-                  {item.label}
-                </Link>
-              </li>
-            ))}
+            {navItems.map((item) => {
+              const isItemActive =
+                pathname === item.href ||
+                item.children?.some((child) => pathname === child.href);
+
+              if (item.children) {
+                return (
+                  <li key={item.href} className="nav-item-dropdown">
+                    <Link
+                      href={item.href}
+                      className={`nav-dropdown-toggle ${isItemActive ? "active" : ""}`}
+                      onClick={() => setIsOpen(false)}
+                    >
+                      {item.label}
+                      <ChevronDown size={14} style={{ opacity: 0.7 }} />
+                    </Link>
+                    <div className="nav-dropdown-menu">
+                      {item.children.map((child) => (
+                        <Link
+                          key={child.href}
+                          href={child.href}
+                          className={pathname === child.href ? "active" : ""}
+                          onClick={() => setIsOpen(false)}
+                        >
+                          {child.label}
+                        </Link>
+                      ))}
+                    </div>
+                  </li>
+                );
+              }
+
+              return (
+                <li key={item.href}>
+                  <Link
+                    href={item.href}
+                    className={pathname === item.href ? "active" : ""}
+                    onClick={() => setIsOpen(false)}
+                  >
+                    {item.label}
+                  </Link>
+                </li>
+              );
+            })}
           </ul>
 
           <button

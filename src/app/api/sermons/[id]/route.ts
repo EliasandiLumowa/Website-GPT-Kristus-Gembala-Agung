@@ -43,6 +43,7 @@ export async function PUT(
         youtubeUrl: body.youtubeUrl,
         description: body.description || null,
         thumbnail: body.thumbnail || null,
+        isHighlight: body.isHighlight !== undefined ? Boolean(body.isHighlight) : undefined,
         isPublished: body.isPublished,
       },
     });

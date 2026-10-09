@@ -26,21 +26,24 @@ model Sermon {
   youtubeUrl  String
   description String?
   thumbnail   String?
+  isHighlight Boolean  @default(false)
   isPublished Boolean  @default(true)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 }
 
 model Song {
-  id         String   @id @default(cuid())
-  title      String
-  artist     String?
-  lyrics     String
-  category   String?
-  youtubeUrl String?
-  isPublished Boolean @default(true)
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
+  id          String   @id @default(cuid())
+  title       String
+  artist      String?
+  lyrics      String
+  category    String?
+  youtubeUrl  String?
+  fileUrl     String?
+  isOriginal  Boolean  @default(false)
+  isPublished Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 }
 
 model News {

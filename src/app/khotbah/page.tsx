@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Play, Search } from "lucide-react";
+import { Play, Search, Sparkles } from "lucide-react";
 import prisma from "@/lib/prisma";
 
 export const metadata = {
@@ -58,6 +58,33 @@ export default async function KhotbahPage({
 
       <section className="section">
         <div className="container">
+          {/* Navigation Tabs */}
+          <div
+            style={{
+              display: "flex",
+              gap: "var(--space-sm)",
+              marginBottom: "var(--space-xl)",
+              borderBottom: "1px solid var(--color-border)",
+              paddingBottom: "var(--space-md)",
+            }}
+          >
+            <Link
+              href="/khotbah"
+              className="btn btn-primary"
+              style={{ fontSize: "0.88rem" }}
+            >
+              Semua Khotbah
+            </Link>
+            <Link
+              href="/highlight-khotbah"
+              className="btn btn-outline"
+              style={{ fontSize: "0.88rem" }}
+            >
+              <Sparkles size={16} />
+              Highlight Khotbah
+            </Link>
+          </div>
+
           {/* Search */}
           <form action="/khotbah" method="GET">
             <div className="search-bar">

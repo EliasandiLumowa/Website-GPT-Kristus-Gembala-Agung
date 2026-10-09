@@ -9,16 +9,27 @@ export async function GET(req: NextRequest) {
     const page = parseInt(searchParams.get("page") || "1");
     const limit = parseInt(searchParams.get("limit") || "12");
     const search = searchParams.get("search") || "";
+    const isAdmin = searchParams.get("admin") === "true";
+    const isHighlightParam = searchParams.get("isHighlight");
 
-    const where = search
-      ? {
-          isPublished: true,
-          OR: [
-            { title: { contains: search, mode: "insensitive" as const } },
-            { speaker: { contains: search, mode: "insensitive" as const } },
-          ],
-        }
-      : { isPublished: true };
+    const where: Record<string, unknown> = {};
+
+    if (!isAdmin) {
+      where.isPublished = true;
+    }
+
+    if (isHighlightParam === "true") {
+      where.isHighlight = true;
+    } else if (isHighlightParam === "false") {
+      where.isHighlight = false;
+    }
+
+    if (search) {
+      where.OR = [
+        { title: { contains: search, mode: "insensitive" as const } },
+        { speaker: { contains: search, mode: "insensitive" as const } },
+      ];
+    }
 
     const [sermons, total] = await Promise.all([
       prisma.sermon.findMany({
@@ -36,7 +47,7 @@ export async function GET(req: NextRequest) {
       page,
       totalPages: Math.ceil(total / limit),
     });
-  } catch (error) {
+  } catch {
     return NextResponse.json(
       { error: "Gagal mengambil data khotbah" },
       { status: 500 }
@@ -60,6 +71,7 @@ export async function POST(req: NextRequest) {
         youtubeUrl: body.youtubeUrl,
         description: body.description || null,
         thumbnail: body.thumbnail || null,
+        isHighlight: Boolean(body.isHighlight),
         isPublished: body.isPublished ?? true,
       },
     });

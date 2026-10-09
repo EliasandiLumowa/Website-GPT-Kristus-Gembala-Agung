@@ -60,8 +60,11 @@ export default function Footer() {
             <h4>Navigasi</h4>
             <ul className="footer-links">
               <li><Link href="/">Beranda</Link></li>
+              <li><Link href="/visi-misi">Visi & Misi</Link></li>
               <li><Link href="/khotbah">Khotbah</Link></li>
+              <li><Link href="/highlight-khotbah">Highlight Khotbah</Link></li>
               <li><Link href="/lagu">Lagu & Lyrics</Link></li>
+              <li><Link href="/lagu/ciptaan-sendiri">Lagu Ciptaan Sendiri</Link></li>
               <li><Link href="/berita">Berita</Link></li>
               <li><Link href="/event">Event</Link></li>
             </ul>

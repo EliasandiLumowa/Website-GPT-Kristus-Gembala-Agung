@@ -37,6 +37,8 @@ export async function PUT(
         lyrics: body.lyrics,
         category: body.category || null,
         youtubeUrl: body.youtubeUrl || null,
+        fileUrl: body.fileUrl !== undefined ? body.fileUrl || null : undefined,
+        isOriginal: body.isOriginal !== undefined ? Boolean(body.isOriginal) : undefined,
         isPublished: body.isPublished,
       },
     });

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
-import { Plus, Pencil, Trash2, X, Search, Upload, Loader2, Image as ImageIcon } from "lucide-react";
+import { Plus, Pencil, Trash2, X, Search, Upload, Loader2, Image as ImageIcon, FileText } from "lucide-react";
 
 interface Column {
   key: string;
@@ -12,7 +12,7 @@ interface Column {
 export interface Field {
   key: string;
   label: string;
-  type: "text" | "textarea" | "date" | "url" | "select" | "checkbox" | "image";
+  type: "text" | "textarea" | "date" | "url" | "select" | "checkbox" | "image" | "file";
   placeholder?: string;
   required?: boolean;
   options?: { value: string; label: string }[];
@@ -332,13 +332,13 @@ export default function AdminCrudPage({
                   ) : (
                     <>
                       <label className="form-label">{field.label}</label>
-                      {field.type === "image" ? (
+                      {field.type === "image" || field.type === "file" ? (
                         <div>
                           <div style={{ display: "flex", gap: "var(--space-sm)", marginBottom: "var(--space-xs)" }}>
                             <input
                               type="text"
                               className="form-input"
-                              placeholder={field.placeholder || "https://... atau unggah gambar"}
+                              placeholder={field.placeholder || (field.type === "file" ? "https://... atau unggah gambar / PDF" : "https://... atau unggah gambar")}
                               value={(formData[field.key] as string) || ""}
                               onChange={(e) =>
                                 setFormData({
@@ -371,7 +371,7 @@ export default function AdminCrudPage({
                               )}
                               <input
                                 type="file"
-                                accept="image/*"
+                                accept={field.type === "file" ? "image/*,application/pdf,.pdf" : "image/*"}
                                 style={{ display: "none" }}
                                 disabled={uploadingKey === field.key}
                                 onChange={(e) => {
@@ -391,22 +391,40 @@ export default function AdminCrudPage({
                                 borderRadius: "var(--radius-md)",
                                 overflow: "hidden",
                                 border: "1px solid var(--color-border)",
+                                background: "var(--black-800)",
                               }}
                             >
-                              {/* eslint-disable-next-line @next/next/no-img-element */}
-                              <img
-                                src={formData[field.key] as string}
-                                alt="Pratinjau Gambar"
-                                style={{
-                                  maxHeight: "120px",
-                                  maxWidth: "100%",
-                                  display: "block",
-                                  objectFit: "cover",
-                                }}
-                                onError={(e) => {
-                                  (e.target as HTMLImageElement).style.display = "none";
-                                }}
-                              />
+                              {((formData[field.key] as string).toLowerCase().includes(".pdf") || (formData[field.key] as string).includes("/doc_")) ? (
+                                <div style={{ display: "flex", alignItems: "center", gap: "10px", padding: "10px 38px 10px 12px" }}>
+                                  <FileText size={22} style={{ color: "var(--color-primary)", flexShrink: 0 }} />
+                                  <div>
+                                    <div style={{ fontSize: "0.85rem", fontWeight: 600, color: "var(--color-white)" }}>Dokumen PDF Terlampir</div>
+                                    <a
+                                      href={formData[field.key] as string}
+                                      target="_blank"
+                                      rel="noopener noreferrer"
+                                      style={{ color: "var(--color-primary)", fontSize: "0.8rem", textDecoration: "underline" }}
+                                    >
+                                      Buka / Unduh File PDF ↗
+                                    </a>
+                                  </div>
+                                </div>
+                              ) : (
+                                /* eslint-disable-next-line @next/next/no-img-element */
+                                <img
+                                  src={formData[field.key] as string}
+                                  alt="Pratinjau Gambar"
+                                  style={{
+                                    maxHeight: "120px",
+                                    maxWidth: "100%",
+                                    display: "block",
+                                    objectFit: "cover",
+                                  }}
+                                  onError={(e) => {
+                                    (e.target as HTMLImageElement).style.display = "none";
+                                  }}
+                                />
+                              )}
                               <button
                                 type="button"
                                 onClick={() =>
@@ -417,8 +435,8 @@ export default function AdminCrudPage({
                                 }
                                 style={{
                                   position: "absolute",
-                                  top: "4px",
-                                  right: "4px",
+                                  top: "6px",
+                                  right: "6px",
                                   background: "rgba(0,0,0,0.75)",
                                   color: "#fff",
                                   border: "none",
@@ -430,7 +448,7 @@ export default function AdminCrudPage({
                                   justifyContent: "center",
                                   cursor: "pointer",
                                 }}
-                                title="Hapus gambar"
+                                title="Hapus file"
                               >
                                 <X size={13} />
                               </button>
