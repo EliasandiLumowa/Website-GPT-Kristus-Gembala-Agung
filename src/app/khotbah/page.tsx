@@ -35,11 +35,20 @@ async function getSermons(search: string, page: number) {
   }
 }
 
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/lib/auth";
+import { redirect } from "next/navigation";
+
 export default async function KhotbahPage({
   searchParams,
 }: {
   searchParams: Promise<{ search?: string; page?: string }>;
 }) {
+  const session = await getServerSession(authOptions);
+  if (!session) {
+    redirect("/highlight-khotbah");
+  }
+
   const params = await searchParams;
   const search = params.search || "";
   const page = parseInt(params.page || "1");

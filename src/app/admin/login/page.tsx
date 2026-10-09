@@ -16,25 +16,29 @@ export default function AdminLoginPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
-    setLoading(true);
+    setLoading(true); // <-- 1. Aktifkan loading saat tombol diklik
 
     try {
-      const result = await signIn("credentials", {
-        email,
-        password,
-        redirect: false,
+      // Panggil signIn bawaan NextAuth
+      const res = await signIn("credentials", {
+        redirect: false, // Penting: cegah NextAuth melakukan hard-redirect otomatis
+        email: email,
+        password: password,
       });
 
-      if (result?.error) {
-        setError(result.error);
-      } else {
-        router.push("/admin");
-        router.refresh();
+      if (res?.error) {
+        // Jika salah password / email / akun belum aktif
+        setError(res.error);
+      } else if (res?.ok) {
+        // JIKA BERHASIL LOGIN:
+        
+        // Ganti router.push dan router.refresh dengan ini:
+        window.location.href = "/admin"; 
       }
-    } catch {
-      setError("Terjadi kesalahan. Silakan coba lagi.");
+    } catch (err) {
+      setError("Terjadi kesalahan sistem. Silakan coba lagi.");
     } finally {
-      setLoading(false);
+      setLoading(false); // <-- 2. Matikan loading apa pun hasilnya (sukses/gagal)
     }
   };
 

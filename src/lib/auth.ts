@@ -1,36 +1,39 @@
-import { AuthOptions } from "next-auth";
+import { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
-import bcrypt from "bcryptjs";
 import prisma from "@/lib/prisma";
+import bcrypt from "bcryptjs";
 
-export const authOptions: AuthOptions = {
+export const authOptions: NextAuthOptions = {
   providers: [
     CredentialsProvider({
-      name: "credentials",
+      name: "Credentials",
       credentials: {
         email: { label: "Email", type: "email" },
-        password: { label: "Password", type: "password" },
+        password: { label: "Password", type: "password" }
       },
       async authorize(credentials) {
         if (!credentials?.email || !credentials?.password) {
-          throw new Error("Email dan password diperlukan");
+          throw new Error("Email dan password wajib diisi");
         }
 
         const user = await prisma.user.findUnique({
-          where: { email: credentials.email },
+          where: { email: credentials.email }
         });
 
         if (!user) {
           throw new Error("Email tidak ditemukan");
         }
 
-        const isValid = await bcrypt.compare(
-          credentials.password,
-          user.password
-        );
+        const isValid = await bcrypt.compare(credentials.password, user.password);
 
         if (!isValid) {
           throw new Error("Password salah");
+        }
+
+        // Cek apakah akun aktif (Admin secara default aktif, Jemaat butuh approval)
+        // Di seed.ts admin role adalah ADMIN
+        if (!user.isActive && user.role !== "ADMIN") {
+           throw new Error("Akun Anda belum diaktifkan oleh Admin.");
         }
 
         return {
@@ -38,29 +41,35 @@ export const authOptions: AuthOptions = {
           email: user.email,
           name: user.name,
           role: user.role,
+          isActive: user.isActive,
         };
-      },
-    }),
+      }
+    })
   ],
-  session: {
-    strategy: "jwt",
-  },
   callbacks: {
     async jwt({ token, user }) {
       if (user) {
-        token.role = (user as unknown as { role?: string }).role;
+        token.role = user.role;
+        token.isActive = user.isActive;
+        token.id = user.id;
       }
       return token;
     },
     async session({ session, token }) {
-      if (session.user) {
-        (session.user as { role?: string }).role = token.role as string;
+      if (token && session.user) {
+        (session.user as any).role = token.role;
+        (session.user as any).isActive = token.isActive;
+        (session.user as any).id = token.id;
       }
       return session;
-    },
+    }
   },
   pages: {
-    signIn: "/admin/login",
+    signIn: "/login", // Default login page untuk jemaat
+  },
+  session: {
+    strategy: "jwt",
+    maxAge: 30 * 24 * 60 * 60, // 30 hari
   },
   secret: process.env.NEXTAUTH_SECRET,
 };
