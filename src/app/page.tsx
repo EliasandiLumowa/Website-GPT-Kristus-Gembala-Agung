@@ -95,25 +95,25 @@ const scheduleItems = [
     day: "Selasa",
     name: "Pendalaman Alkitab",
     icon: BookOpen,
-    note: "Setiap minggu",
+    note: "Jam 17:30",
   },
   {
     day: "Jumat",
     name: "Doa Penyembahan",
     icon: HandHeart,
-    note: "Setiap minggu",
+    note: "Jam 17:30",
   },
   {
     day: "Sabtu",
-    name: "Ibadah Youth",
+    name: "Ibadah Remada",
     icon: Users,
-    note: "2 Minggu sekali",
+    note: "Jam 17:30",
   },
   {
     day: "Minggu",
-    name: "Ibadah Anak Domba",
+    name: "Ibadah Umum",
     icon: Baby,
-    note: "Setelah Ibadah Umum",
+    note: "Jam 08:30",
   },
 ];
 
