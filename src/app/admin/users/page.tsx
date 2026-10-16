@@ -57,7 +57,7 @@ export default function AdminUsersPage() {
   const [users, setUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
-  const [statusFilter, setStatusFilter] = useState<"all" | "pending" | "active" | "inactive">("all");
+  const [statusFilter, setStatusFilter] = useState<"all" | "pending" | "active">("all");
   
   // Modals state
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
@@ -84,7 +84,6 @@ export default function AdminUsersPage() {
   useEffect(() => {
     fetchUsers();
     
-    // Check url search params if filter=pending
     if (typeof window !== "undefined") {
       const params = new URLSearchParams(window.location.search);
       if (params.get("filter") === "pending") {
@@ -169,7 +168,7 @@ export default function AdminUsersPage() {
   const activeCount = users.filter((u) => u.isActive).length;
 
   return (
-    <div style={{ maxWidth: "1280px", margin: "0 auto", paddingBottom: "3rem" }}>
+    <div style={{ maxWidth: "1400px", margin: "0 auto", paddingBottom: "3rem" }}>
       {/* Header */}
       <div
         style={{
@@ -182,7 +181,7 @@ export default function AdminUsersPage() {
         }}
       >
         <div>
-          <h1 style={{ fontSize: "1.75rem", fontWeight: "bold", margin: 0 }}>
+          <h1 style={{ fontSize: "1.75rem", fontWeight: "bold", margin: 0, color: "var(--color-white)" }}>
             Manajemen Jemaat
           </h1>
           <p style={{ color: "var(--color-text-secondary)", marginTop: "4px", fontSize: "0.95rem" }}>
@@ -205,7 +204,7 @@ export default function AdminUsersPage() {
       <div
         style={{
           display: "grid",
-          gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
+          gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
           gap: "1rem",
           marginBottom: "1.75rem",
         }}
@@ -213,46 +212,48 @@ export default function AdminUsersPage() {
         <div
           onClick={() => setStatusFilter("all")}
           style={{
-            background: "black",
-            padding: "1.2rem",
+            background: "var(--gradient-card)",
+            padding: "1.25rem",
             borderRadius: "12px",
             border: statusFilter === "all" ? "2px solid var(--color-primary)" : "1px solid var(--color-border)",
+            boxShadow: statusFilter === "all" ? "0 0 15px rgba(212, 160, 23, 0.2)" : "var(--shadow-sm)",
             cursor: "pointer",
             display: "flex",
             alignItems: "center",
             gap: "1rem",
-            boxShadow: "0 1px 3px rgba(0,0,0,0.05)",
+            transition: "all var(--transition-fast)",
           }}
         >
-          <div style={{ background: "#e0f2fe", color: "#0284c7", padding: "10px", borderRadius: "10px" }}>
+          <div style={{ background: "rgba(212, 160, 23, 0.15)", color: "var(--gold-400)", padding: "10px", borderRadius: "10px" }}>
             <Users size={22} />
           </div>
           <div>
             <div style={{ fontSize: "0.85rem", color: "var(--color-text-secondary)" }}>Total Jemaat</div>
-            <div style={{ fontSize: "1.5rem", fontWeight: "bold" }}>{users.length}</div>
+            <div style={{ fontSize: "1.6rem", fontWeight: "bold", color: "var(--color-white)" }}>{users.length}</div>
           </div>
         </div>
 
         <div
           onClick={() => setStatusFilter("pending")}
           style={{
-            background: "black",
-            padding: "1.2rem",
+            background: "var(--gradient-card)",
+            padding: "1.25rem",
             borderRadius: "12px",
-            border: statusFilter === "pending" ? "2px solid #f59e0b" : "1px solid var(--color-border)",
+            border: statusFilter === "pending" ? "2px solid var(--gold-400)" : "1px solid var(--color-border)",
+            boxShadow: statusFilter === "pending" ? "0 0 15px rgba(212, 160, 23, 0.3)" : "var(--shadow-sm)",
             cursor: "pointer",
             display: "flex",
             alignItems: "center",
             gap: "1rem",
-            boxShadow: "0 1px 3px rgba(0,0,0,0.05)",
+            transition: "all var(--transition-fast)",
           }}
         >
-          <div style={{ background: "#fef3c7", color: "#d97706", padding: "10px", borderRadius: "10px" }}>
+          <div style={{ background: "rgba(212, 160, 23, 0.2)", color: "var(--gold-300)", padding: "10px", borderRadius: "10px" }}>
             <Clock size={22} />
           </div>
           <div>
             <div style={{ fontSize: "0.85rem", color: "var(--color-text-secondary)" }}>Menunggu Persetujuan</div>
-            <div style={{ fontSize: "1.5rem", fontWeight: "bold", color: pendingCount > 0 ? "#b45309" : "inherit" }}>
+            <div style={{ fontSize: "1.6rem", fontWeight: "bold", color: pendingCount > 0 ? "var(--gold-400)" : "var(--color-white)" }}>
               {pendingCount}
             </div>
           </div>
@@ -261,23 +262,24 @@ export default function AdminUsersPage() {
         <div
           onClick={() => setStatusFilter("active")}
           style={{
-            background: "black",
-            padding: "1.2rem",
+            background: "var(--gradient-card)",
+            padding: "1.25rem",
             borderRadius: "12px",
-            border: statusFilter === "active" ? "2px solid #10b981" : "1px solid var(--color-border)",
+            border: statusFilter === "active" ? "2px solid #4ade80" : "1px solid var(--color-border)",
+            boxShadow: statusFilter === "active" ? "0 0 15px rgba(74, 222, 128, 0.2)" : "var(--shadow-sm)",
             cursor: "pointer",
             display: "flex",
             alignItems: "center",
             gap: "1rem",
-            boxShadow: "0 1px 3px rgba(0,0,0,0.05)",
+            transition: "all var(--transition-fast)",
           }}
         >
-          <div style={{ background: "#dcfce7", color: "#16a34a", padding: "10px", borderRadius: "10px" }}>
+          <div style={{ background: "rgba(76, 175, 80, 0.15)", color: "#4ade80", padding: "10px", borderRadius: "10px" }}>
             <UserCheck size={22} />
           </div>
           <div>
             <div style={{ fontSize: "0.85rem", color: "var(--color-text-secondary)" }}>Akun Aktif</div>
-            <div style={{ fontSize: "1.5rem", fontWeight: "bold", color: "#15803d" }}>{activeCount}</div>
+            <div style={{ fontSize: "1.6rem", fontWeight: "bold", color: "#4ade80" }}>{activeCount}</div>
           </div>
         </div>
       </div>
@@ -285,7 +287,7 @@ export default function AdminUsersPage() {
       {/* Filter and Search Bar */}
       <div
         style={{
-          background: "black",
+          background: "var(--gradient-card)",
           padding: "1rem 1.25rem",
           borderRadius: "12px",
           border: "1px solid var(--color-border)",
@@ -311,8 +313,8 @@ export default function AdminUsersPage() {
             style={{
               fontSize: "0.85rem",
               padding: "0.45rem 0.9rem",
-              borderColor: statusFilter === "pending" ? undefined : "#f59e0b",
-              color: statusFilter === "pending" ? undefined : "#b45309",
+              borderColor: statusFilter === "pending" ? undefined : "var(--gold-400)",
+              color: statusFilter === "pending" ? undefined : "var(--gold-300)",
             }}
           >
             Menunggu ({pendingCount})
@@ -323,8 +325,8 @@ export default function AdminUsersPage() {
             style={{
               fontSize: "0.85rem",
               padding: "0.45rem 0.9rem",
-              borderColor: statusFilter === "active" ? undefined : "#10b981",
-              color: statusFilter === "active" ? undefined : "#15803d",
+              borderColor: statusFilter === "active" ? undefined : "#4ade80",
+              color: statusFilter === "active" ? undefined : "#4ade80",
             }}
           >
             Aktif ({activeCount})
@@ -339,7 +341,7 @@ export default function AdminUsersPage() {
               left: "12px",
               top: "50%",
               transform: "translateY(-50%)",
-              color: "#9ca3af",
+              color: "var(--gold-400)",
             }}
           />
           <input
@@ -356,31 +358,37 @@ export default function AdminUsersPage() {
       {/* Main Table */}
       <div
         style={{
-          background: "black",
+          background: "var(--gradient-card)",
           borderRadius: "12px",
           border: "1px solid var(--color-border)",
-          boxShadow: "0 2px 4px rgba(0,0,0,0.03)",
+          boxShadow: "0 10px 30px rgba(0, 0, 0, 0.4)",
           overflow: "hidden",
         }}
       >
         <div style={{ overflowX: "auto" }}>
           <table style={{ width: "100%", borderCollapse: "collapse", textAlign: "left", fontSize: "0.9rem" }}>
             <thead>
-              <tr style={{ background: "#f1e42cff", borderBottom: "1px solid var(--color-border)", color: "#475569" }}>
-                <th style={{ padding: "14px 16px", fontWeight: 600 }}>Kepala Keluarga</th>
-                <th style={{ padding: "14px 16px", fontWeight: 600 }}>NIK</th>
-                <th style={{ padding: "14px 16px", fontWeight: 600 }}>Umur / JK</th>
-                <th style={{ padding: "14px 16px", fontWeight: 600 }}>Keluarga</th>
-                <th style={{ padding: "14px 16px", fontWeight: 600 }}>Status Akun</th>
-                <th style={{ padding: "14px 16px", fontWeight: 600 }}>Tgl Daftar</th>
-                <th style={{ padding: "14px 16px", fontWeight: 600, textAlign: "right" }}>Aksi</th>
+              <tr
+                style={{
+                  background: "rgba(212, 160, 23, 0.12)",
+                  borderBottom: "1px solid rgba(212, 160, 23, 0.25)",
+                  color: "var(--gold-300)",
+                }}
+              >
+                <th style={{ padding: "14px 16px", fontWeight: 700 }}>Kepala Keluarga</th>
+                <th style={{ padding: "14px 16px", fontWeight: 700 }}>NIK</th>
+                <th style={{ padding: "14px 16px", fontWeight: 700 }}>Umur / JK</th>
+                <th style={{ padding: "14px 16px", fontWeight: 700 }}>Keluarga</th>
+                <th style={{ padding: "14px 16px", fontWeight: 700 }}>Status Akun</th>
+                <th style={{ padding: "14px 16px", fontWeight: 700 }}>Tgl Daftar</th>
+                <th style={{ padding: "14px 16px", fontWeight: 700, textAlign: "right" }}>Aksi</th>
               </tr>
             </thead>
             <tbody>
               {loading ? (
                 <tr>
                   <td colSpan={7} style={{ textAlign: "center", padding: "40px" }}>
-                    <div style={{ display: "flex", justifyContent: "center", alignItems: "center", gap: "8px", color: "var(--color-text-secondary)" }}>
+                    <div style={{ display: "flex", justifyContent: "center", alignItems: "center", gap: "8px", color: "var(--gold-400)" }}>
                       <Loader2 className="animate-spin" size={20} />
                       <span>Memuat data jemaat...</span>
                     </div>
@@ -389,7 +397,7 @@ export default function AdminUsersPage() {
               ) : filteredUsers.length === 0 ? (
                 <tr>
                   <td colSpan={7} style={{ textAlign: "center", padding: "40px", color: "var(--color-text-secondary)" }}>
-                    <Users size={36} style={{ margin: "0 auto 10px", opacity: 0.3 }} />
+                    <Users size={36} style={{ margin: "0 auto 10px", opacity: 0.3, color: "var(--gold-400)" }} />
                     <p style={{ margin: 0, fontWeight: 500 }}>
                       {search || statusFilter !== "all"
                         ? "Tidak ada data jemaat yang sesuai dengan kriteria pencarian."
@@ -406,28 +414,28 @@ export default function AdminUsersPage() {
                     <tr
                       key={user.id}
                       style={{
-                        borderBottom: "1px solid #f1f5f9",
-                        transition: "background-color 0.2s",
+                        borderBottom: "1px solid var(--color-border)",
+                        transition: "background-color 0.15s ease",
                       }}
-                      onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = "#f8fafc")}
+                      onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = "rgba(212, 160, 23, 0.05)")}
                       onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "transparent")}
                     >
                       {/* Nama & Username */}
                       <td style={{ padding: "14px 16px" }}>
-                        <div style={{ fontWeight: 600, color: "var(--color-text-primary)" }}>{user.name}</div>
-                        <div style={{ fontSize: "0.8rem", color: "var(--color-text-secondary)" }}>
+                        <div style={{ fontWeight: 600, color: "var(--color-white)" }}>{user.name}</div>
+                        <div style={{ fontSize: "0.8rem", color: "var(--gold-400)" }}>
                           @{user.username}
                         </div>
                       </td>
 
                       {/* NIK */}
-                      <td style={{ padding: "14px 16px", fontFamily: "monospace", fontSize: "0.85rem" }}>
+                      <td style={{ padding: "14px 16px", fontFamily: "monospace", fontSize: "0.85rem", color: "var(--color-text)" }}>
                         {user.nik}
                       </td>
 
                       {/* Umur & JK */}
                       <td style={{ padding: "14px 16px" }}>
-                        <div>{user.umur ? `${user.umur} thn` : "-"}</div>
+                        <div style={{ color: "var(--color-text)" }}>{user.umur ? `${user.umur} thn` : "-"}</div>
                         <div style={{ fontSize: "0.78rem", color: "var(--color-text-secondary)" }}>
                           {user.jenisKelamin}
                         </div>
@@ -440,12 +448,12 @@ export default function AdminUsersPage() {
                             style={{
                               fontSize: "0.78rem",
                               fontWeight: 600,
-                              color: isMarried ? "#0369a1" : "#475569",
+                              color: isMarried ? "var(--gold-300)" : "var(--color-text-secondary)",
                             }}
                           >
                             {isMarried ? "💍 Sudah Menikah" : "Belum Menikah"}
                           </span>
-                          <span style={{ fontSize: "0.75rem", color: "var(--color-text-secondary)" }}>
+                          <span style={{ fontSize: "0.75rem", color: "var(--color-text-muted)" }}>
                             {isMarried && user.pasangan ? `Pasangan: ${user.pasangan.name}` : ""}
                             {childCount > 0 ? ` • ${childCount} Anak` : isMarried ? " • 0 Anak" : ""}
                           </span>
@@ -463,9 +471,9 @@ export default function AdminUsersPage() {
                             borderRadius: "999px",
                             fontSize: "0.78rem",
                             fontWeight: 600,
-                            backgroundColor: user.isActive ? "#dcfce7" : "#fef3c7",
-                            color: user.isActive ? "#15803d" : "#b45309",
-                            border: user.isActive ? "1px solid #bbf7d0" : "1px solid #fde68a",
+                            backgroundColor: user.isActive ? "rgba(76, 175, 80, 0.15)" : "rgba(212, 160, 23, 0.15)",
+                            color: user.isActive ? "#4ade80" : "var(--gold-300)",
+                            border: user.isActive ? "1px solid rgba(76, 175, 80, 0.4)" : "1px solid rgba(212, 160, 23, 0.4)",
                           }}
                         >
                           {user.isActive ? (
@@ -498,16 +506,16 @@ export default function AdminUsersPage() {
                             disabled={actionLoading}
                             title={user.isActive ? "Nonaktifkan Akun" : "Setujui Akun"}
                             style={{
-                              padding: "6px 10px",
+                              padding: "6px 12px",
                               borderRadius: "6px",
-                              border: "none",
+                              border: user.isActive ? "1px solid rgba(239, 83, 80, 0.5)" : "none",
                               cursor: "pointer",
                               display: "inline-flex",
                               alignItems: "center",
                               gap: "4px",
-                              backgroundColor: user.isActive ? "#fef2f2" : "#10b981",
-                              color: user.isActive ? "#dc2626" : "black",
-                              fontWeight: 600,
+                              backgroundColor: user.isActive ? "transparent" : "var(--color-primary)",
+                              color: user.isActive ? "#ef5350" : "#0a0a0a",
+                              fontWeight: 700,
                               fontSize: "0.8rem",
                               transition: "all 0.2s",
                             }}
@@ -530,9 +538,9 @@ export default function AdminUsersPage() {
                             style={{
                               padding: "6px 10px",
                               borderRadius: "6px",
-                              border: "1px solid var(--color-border)",
-                              backgroundColor: "black",
-                              color: "var(--color-text-primary)",
+                              border: "1px solid var(--color-border-light)",
+                              backgroundColor: "rgba(255, 255, 255, 0.05)",
+                              color: "var(--color-text)",
                               cursor: "pointer",
                               display: "inline-flex",
                               alignItems: "center",
@@ -540,7 +548,7 @@ export default function AdminUsersPage() {
                               fontSize: "0.8rem",
                             }}
                           >
-                            <Eye size={14} />
+                            <Eye size={14} style={{ color: "var(--gold-400)" }} />
                             Detail
                           </button>
 
@@ -553,7 +561,7 @@ export default function AdminUsersPage() {
                               borderRadius: "6px",
                               border: "none",
                               backgroundColor: "transparent",
-                              color: "#ef4444",
+                              color: "var(--color-error)",
                               cursor: "pointer",
                             }}
                           >
@@ -579,7 +587,8 @@ export default function AdminUsersPage() {
             left: 0,
             right: 0,
             bottom: 0,
-            backgroundColor: "rgba(0,0,0,0.5)",
+            backgroundColor: "rgba(0,0,0,0.75)",
+            backdropFilter: "blur(5px)",
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
@@ -590,13 +599,14 @@ export default function AdminUsersPage() {
         >
           <div
             style={{
-              backgroundColor: "black",
+              backgroundColor: "var(--black-600)",
               borderRadius: "16px",
               maxWidth: "650px",
               width: "100%",
               maxHeight: "90vh",
               overflowY: "auto",
-              boxShadow: "0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)",
+              border: "1px solid rgba(212, 160, 23, 0.35)",
+              boxShadow: "0 20px 40px rgba(0, 0, 0, 0.8), 0 0 30px rgba(212, 160, 23, 0.1)",
             }}
             onClick={(e) => e.stopPropagation()}
           >
@@ -608,14 +618,15 @@ export default function AdminUsersPage() {
                 display: "flex",
                 justifyContent: "space-between",
                 alignItems: "center",
+                background: "rgba(212, 160, 23, 0.08)",
               }}
             >
               <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-                <div style={{ background: "#f0fdf4", color: "#16a34a", padding: "8px", borderRadius: "8px" }}>
+                <div style={{ background: "rgba(212, 160, 23, 0.2)", color: "var(--gold-400)", padding: "8px", borderRadius: "8px" }}>
                   <ShieldCheck size={24} />
                 </div>
                 <div>
-                  <h3 style={{ margin: 0, fontSize: "1.2rem", fontWeight: "bold" }}>
+                  <h3 style={{ margin: 0, fontSize: "1.2rem", fontWeight: "bold", color: "var(--color-white)" }}>
                     Detail Data Keluarga Jemaat
                   </h3>
                   <p style={{ margin: 0, fontSize: "0.85rem", color: "var(--color-text-secondary)" }}>
@@ -629,7 +640,7 @@ export default function AdminUsersPage() {
                   background: "transparent",
                   border: "none",
                   cursor: "pointer",
-                  color: "#6b7280",
+                  color: "var(--color-text-muted)",
                 }}
               >
                 <X size={20} />
@@ -641,10 +652,10 @@ export default function AdminUsersPage() {
               {/* Section 1: Kepala Keluarga */}
               <div
                 style={{
-                  background: "#f1e42cff",
+                  background: "rgba(0, 0, 0, 0.35)",
                   borderRadius: "10px",
                   padding: "1.25rem",
-                  border: "1px solid #e2e8f0",
+                  border: "1px solid rgba(212, 160, 23, 0.2)",
                 }}
               >
                 <div
@@ -653,12 +664,12 @@ export default function AdminUsersPage() {
                     justifyContent: "space-between",
                     alignItems: "center",
                     marginBottom: "10px",
-                    borderBottom: "1px solid #e2e8f0",
+                    borderBottom: "1px solid var(--color-border)",
                     paddingBottom: "8px",
                   }}
                 >
-                  <span style={{ fontWeight: "bold", fontSize: "0.95rem", color: "#1e293b", display: "flex", alignItems: "center", gap: "6px" }}>
-                    <Users size={16} color="var(--color-primary)" /> Data Kepala Keluarga
+                  <span style={{ fontWeight: "bold", fontSize: "0.95rem", color: "var(--gold-300)", display: "flex", alignItems: "center", gap: "6px" }}>
+                    <Users size={16} /> Data Kepala Keluarga
                   </span>
                   <span
                     style={{
@@ -666,8 +677,9 @@ export default function AdminUsersPage() {
                       padding: "2px 8px",
                       borderRadius: "99px",
                       fontWeight: 600,
-                      backgroundColor: selectedUser.isActive ? "#dcfce7" : "#fef3c7",
-                      color: selectedUser.isActive ? "#15803d" : "#b45309",
+                      backgroundColor: selectedUser.isActive ? "rgba(76, 175, 80, 0.15)" : "rgba(212, 160, 23, 0.15)",
+                      color: selectedUser.isActive ? "#4ade80" : "var(--gold-300)",
+                      border: selectedUser.isActive ? "1px solid rgba(76, 175, 80, 0.4)" : "1px solid rgba(212, 160, 23, 0.4)",
                     }}
                   >
                     {selectedUser.isActive ? "Disetujui" : "Menunggu Persetujuan"}
@@ -683,28 +695,28 @@ export default function AdminUsersPage() {
                   }}
                 >
                   <div>
-                    <span style={{ color: "#64748b", display: "block", fontSize: "0.78rem" }}>Nama Lengkap</span>
-                    <strong style={{ color: "#0f172a" }}>{selectedUser.name}</strong>
+                    <span style={{ color: "var(--color-text-secondary)", display: "block", fontSize: "0.78rem" }}>Nama Lengkap</span>
+                    <strong style={{ color: "var(--color-white)" }}>{selectedUser.name}</strong>
                   </div>
                   <div>
-                    <span style={{ color: "#64748b", display: "block", fontSize: "0.78rem" }}>Username</span>
-                    <strong style={{ color: "#0f172a" }}>@{selectedUser.username}</strong>
+                    <span style={{ color: "var(--color-text-secondary)", display: "block", fontSize: "0.78rem" }}>Username</span>
+                    <strong style={{ color: "var(--gold-400)" }}>@{selectedUser.username}</strong>
                   </div>
                   <div>
-                    <span style={{ color: "#64748b", display: "block", fontSize: "0.78rem" }}>NIK Kepala Keluarga</span>
-                    <strong style={{ color: "#0f172a", fontFamily: "monospace" }}>{selectedUser.nik}</strong>
+                    <span style={{ color: "var(--color-text-secondary)", display: "block", fontSize: "0.78rem" }}>NIK Kepala Keluarga</span>
+                    <strong style={{ color: "var(--color-text)", fontFamily: "monospace" }}>{selectedUser.nik}</strong>
                   </div>
                   <div>
-                    <span style={{ color: "#64748b", display: "block", fontSize: "0.78rem" }}>Umur</span>
-                    <strong style={{ color: "#0f172a" }}>{selectedUser.umur ? `${selectedUser.umur} Tahun` : "-"}</strong>
+                    <span style={{ color: "var(--color-text-secondary)", display: "block", fontSize: "0.78rem" }}>Umur</span>
+                    <strong style={{ color: "var(--color-white)" }}>{selectedUser.umur ? `${selectedUser.umur} Tahun` : "-"}</strong>
                   </div>
                   <div>
-                    <span style={{ color: "#64748b", display: "block", fontSize: "0.78rem" }}>Jenis Kelamin</span>
-                    <strong style={{ color: "#0f172a" }}>{selectedUser.jenisKelamin}</strong>
+                    <span style={{ color: "var(--color-text-secondary)", display: "block", fontSize: "0.78rem" }}>Jenis Kelamin</span>
+                    <strong style={{ color: "var(--color-white)" }}>{selectedUser.jenisKelamin}</strong>
                   </div>
                   <div>
-                    <span style={{ color: "#64748b", display: "block", fontSize: "0.78rem" }}>Status Pernikahan</span>
-                    <strong style={{ color: "#0f172a" }}>{selectedUser.statusMenikah}</strong>
+                    <span style={{ color: "var(--color-text-secondary)", display: "block", fontSize: "0.78rem" }}>Status Pernikahan</span>
+                    <strong style={{ color: "var(--color-white)" }}>{selectedUser.statusMenikah}</strong>
                   </div>
                 </div>
               </div>
@@ -712,19 +724,19 @@ export default function AdminUsersPage() {
               {/* Section 2: Biodata Istri/Suami */}
               <div
                 style={{
-                  background: "#fdf4ff",
+                  background: "rgba(212, 160, 23, 0.06)",
                   borderRadius: "10px",
                   padding: "1.25rem",
-                  border: "1px solid #f5d0fe",
+                  border: "1px solid rgba(212, 160, 23, 0.25)",
                 }}
               >
                 <div
                   style={{
                     fontWeight: "bold",
                     fontSize: "0.95rem",
-                    color: "#86198f",
+                    color: "var(--gold-300)",
                     marginBottom: "10px",
-                    borderBottom: "1px solid #f5d0fe",
+                    borderBottom: "1px solid rgba(212, 160, 23, 0.2)",
                     paddingBottom: "8px",
                     display: "flex",
                     alignItems: "center",
@@ -744,28 +756,28 @@ export default function AdminUsersPage() {
                     }}
                   >
                     <div>
-                      <span style={{ color: "#701a75", display: "block", fontSize: "0.78rem" }}>Nama Pasangan</span>
-                      <strong style={{ color: "#4a044e" }}>{selectedUser.pasangan.name}</strong>
+                      <span style={{ color: "var(--color-text-secondary)", display: "block", fontSize: "0.78rem" }}>Nama Pasangan</span>
+                      <strong style={{ color: "var(--color-white)" }}>{selectedUser.pasangan.name}</strong>
                     </div>
                     <div>
-                      <span style={{ color: "#701a75", display: "block", fontSize: "0.78rem" }}>Umur</span>
-                      <strong style={{ color: "#4a044e" }}>
+                      <span style={{ color: "var(--color-text-secondary)", display: "block", fontSize: "0.78rem" }}>Umur</span>
+                      <strong style={{ color: "var(--color-white)" }}>
                         {selectedUser.pasangan.umur ? `${selectedUser.pasangan.umur} Tahun` : "-"}
                       </strong>
                     </div>
                     <div>
-                      <span style={{ color: "#701a75", display: "block", fontSize: "0.78rem" }}>Jenis Kelamin</span>
-                      <strong style={{ color: "#4a044e" }}>{selectedUser.pasangan.jenisKelamin}</strong>
+                      <span style={{ color: "var(--color-text-secondary)", display: "block", fontSize: "0.78rem" }}>Jenis Kelamin</span>
+                      <strong style={{ color: "var(--color-white)" }}>{selectedUser.pasangan.jenisKelamin}</strong>
                     </div>
                     <div>
-                      <span style={{ color: "#701a75", display: "block", fontSize: "0.78rem" }}>NIK (Opsional)</span>
-                      <strong style={{ color: "#4a044e", fontFamily: "monospace" }}>
+                      <span style={{ color: "var(--color-text-secondary)", display: "block", fontSize: "0.78rem" }}>NIK (Opsional)</span>
+                      <strong style={{ color: "var(--color-text)", fontFamily: "monospace" }}>
                         {selectedUser.pasangan.nik || "-"}
                       </strong>
                     </div>
                   </div>
                 ) : (
-                  <p style={{ margin: 0, fontSize: "0.85rem", color: "#a21caf", fontStyle: "italic" }}>
+                  <p style={{ margin: 0, fontSize: "0.85rem", color: "var(--color-text-muted)", fontStyle: "italic" }}>
                     {selectedUser.statusMenikah === "Belum Menikah"
                       ? "Status Belum Menikah (Tidak ada data pasangan)"
                       : "Tidak ada data pasangan yang dicatat."}
@@ -776,10 +788,10 @@ export default function AdminUsersPage() {
               {/* Section 3: Biodata Anak */}
               <div
                 style={{
-                  background: "#eff6ff",
+                  background: "rgba(0, 0, 0, 0.35)",
                   borderRadius: "10px",
                   padding: "1.25rem",
-                  border: "1px solid #bfdbfe",
+                  border: "1px solid rgba(212, 160, 23, 0.2)",
                 }}
               >
                 <div
@@ -788,17 +800,17 @@ export default function AdminUsersPage() {
                     justifyContent: "space-between",
                     alignItems: "center",
                     marginBottom: "10px",
-                    borderBottom: "1px solid #bfdbfe",
+                    borderBottom: "1px solid var(--color-border)",
                     paddingBottom: "8px",
                   }}
                 >
-                  <span style={{ fontWeight: "bold", fontSize: "0.95rem", color: "#1d4ed8", display: "flex", alignItems: "center", gap: "6px" }}>
+                  <span style={{ fontWeight: "bold", fontSize: "0.95rem", color: "var(--gold-300)", display: "flex", alignItems: "center", gap: "6px" }}>
                     <Baby size={16} /> Data Anak ({selectedUser.anak?.length || 0})
                   </span>
                 </div>
 
                 {!selectedUser.anak || selectedUser.anak.length === 0 ? (
-                  <p style={{ margin: 0, fontSize: "0.85rem", color: "#3b82f6", fontStyle: "italic" }}>
+                  <p style={{ margin: 0, fontSize: "0.85rem", color: "var(--color-text-muted)", fontStyle: "italic" }}>
                     Tidak ada data anak yang didaftarkan.
                   </p>
                 ) : (
@@ -807,10 +819,10 @@ export default function AdminUsersPage() {
                       <div
                         key={a.id || idx}
                         style={{
-                          background: "black",
+                          background: "rgba(22, 22, 22, 0.9)",
                           padding: "10px 14px",
                           borderRadius: "8px",
-                          border: "1px solid #dbeafe",
+                          border: "1px solid rgba(212, 160, 23, 0.15)",
                           display: "grid",
                           gridTemplateColumns: "repeat(auto-fit, minmax(140px, 1fr))",
                           gap: "8px",
@@ -818,23 +830,23 @@ export default function AdminUsersPage() {
                         }}
                       >
                         <div>
-                          <span style={{ color: "#64748b", display: "block", fontSize: "0.75rem" }}>
+                          <span style={{ color: "var(--color-text-secondary)", display: "block", fontSize: "0.75rem" }}>
                             Anak ke-{idx + 1}
                           </span>
-                          <strong>{a.name}</strong>
+                          <strong style={{ color: "var(--color-white)" }}>{a.name}</strong>
                         </div>
                         <div>
-                          <span style={{ color: "#64748b", display: "block", fontSize: "0.75rem" }}>Umur</span>
-                          <span>{a.umur ? `${a.umur} Tahun` : "-"}</span>
+                          <span style={{ color: "var(--color-text-secondary)", display: "block", fontSize: "0.75rem" }}>Umur</span>
+                          <span style={{ color: "var(--color-text)" }}>{a.umur ? `${a.umur} Tahun` : "-"}</span>
                         </div>
                         <div>
-                          <span style={{ color: "#64748b", display: "block", fontSize: "0.75rem" }}>Jenis Kelamin</span>
-                          <span>{a.jenisKelamin}</span>
+                          <span style={{ color: "var(--color-text-secondary)", display: "block", fontSize: "0.75rem" }}>Jenis Kelamin</span>
+                          <span style={{ color: "var(--color-text)" }}>{a.jenisKelamin}</span>
                         </div>
                         {a.nik && (
                           <div>
-                            <span style={{ color: "#64748b", display: "block", fontSize: "0.75rem" }}>NIK</span>
-                            <span style={{ fontFamily: "monospace" }}>{a.nik}</span>
+                            <span style={{ color: "var(--color-text-secondary)", display: "block", fontSize: "0.75rem" }}>NIK</span>
+                            <span style={{ fontFamily: "monospace", color: "var(--color-text)" }}>{a.nik}</span>
                           </div>
                         )}
                       </div>
@@ -852,7 +864,7 @@ export default function AdminUsersPage() {
                 display: "flex",
                 justifyContent: "space-between",
                 alignItems: "center",
-                background: "#f8fafc",
+                background: "rgba(0, 0, 0, 0.4)",
                 borderBottomLeftRadius: "16px",
                 borderBottomRightRadius: "16px",
               }}
@@ -862,7 +874,7 @@ export default function AdminUsersPage() {
                 style={{
                   background: "transparent",
                   border: "none",
-                  color: "#ef4444",
+                  color: "var(--color-error)",
                   display: "flex",
                   alignItems: "center",
                   gap: "6px",
@@ -888,14 +900,14 @@ export default function AdminUsersPage() {
                   style={{
                     padding: "0.5rem 1.25rem",
                     borderRadius: "8px",
-                    border: "none",
+                    border: selectedUser.isActive ? "1px solid rgba(239, 83, 80, 0.5)" : "none",
                     cursor: "pointer",
                     display: "flex",
                     alignItems: "center",
                     gap: "6px",
-                    backgroundColor: selectedUser.isActive ? "#ef4444" : "#10b981",
-                    color: "black",
-                    fontWeight: 600,
+                    backgroundColor: selectedUser.isActive ? "transparent" : "var(--color-primary)",
+                    color: selectedUser.isActive ? "#ef5350" : "#0a0a0a",
+                    fontWeight: 700,
                     fontSize: "0.85rem",
                   }}
                 >
@@ -924,7 +936,8 @@ export default function AdminUsersPage() {
             left: 0,
             right: 0,
             bottom: 0,
-            backgroundColor: "rgba(0,0,0,0.5)",
+            backgroundColor: "rgba(0,0,0,0.75)",
+            backdropFilter: "blur(5px)",
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
@@ -935,12 +948,13 @@ export default function AdminUsersPage() {
         >
           <div
             style={{
-              backgroundColor: "black",
+              backgroundColor: "var(--black-600)",
               borderRadius: "12px",
               maxWidth: "420px",
               width: "100%",
               padding: "24px",
-              boxShadow: "0 20px 25px -5px rgba(0, 0, 0, 0.1)",
+              border: "1px solid rgba(239, 83, 80, 0.4)",
+              boxShadow: "0 20px 40px rgba(0, 0, 0, 0.8)",
               textAlign: "center",
             }}
             onClick={(e) => e.stopPropagation()}
@@ -950,8 +964,8 @@ export default function AdminUsersPage() {
                 width: "48px",
                 height: "48px",
                 borderRadius: "50%",
-                background: "#fee2e2",
-                color: "#dc2626",
+                background: "rgba(239, 83, 80, 0.15)",
+                color: "#ef5350",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
@@ -961,11 +975,11 @@ export default function AdminUsersPage() {
               <AlertTriangle size={24} />
             </div>
 
-            <h3 style={{ fontSize: "1.2rem", fontWeight: "bold", marginBottom: "8px" }}>
+            <h3 style={{ fontSize: "1.2rem", fontWeight: "bold", marginBottom: "8px", color: "var(--color-white)" }}>
               Hapus Data Jemaat?
             </h3>
-            <p style={{ color: "#64748b", fontSize: "0.9rem", marginBottom: "20px", lineHeight: "1.5" }}>
-              Apakah Anda yakin ingin menghapus akun <strong>{userToDelete.name}</strong> (@{userToDelete.username})? Tindakan ini akan menghapus seluruh data keluarga dan tidak dapat dibatalkan.
+            <p style={{ color: "var(--color-text-secondary)", fontSize: "0.9rem", marginBottom: "20px", lineHeight: "1.5" }}>
+              Apakah Anda yakin ingin menghapus akun <strong style={{ color: "var(--gold-400)" }}>{userToDelete.name}</strong> (@{userToDelete.username})? Tindakan ini akan menghapus seluruh data keluarga dan tidak dapat dibatalkan.
             </p>
 
             <div style={{ display: "flex", gap: "10px", justifyContent: "center" }}>
@@ -985,8 +999,8 @@ export default function AdminUsersPage() {
                   padding: "0.55rem",
                   borderRadius: "8px",
                   border: "none",
-                  backgroundColor: "#dc2626",
-                  color: "black",
+                  backgroundColor: "var(--color-error)",
+                  color: "white",
                   fontWeight: 600,
                   cursor: "pointer",
                 }}

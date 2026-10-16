@@ -65,7 +65,6 @@ export default function RegisterPage() {
   const handleStatusMenikahChange = (val: string) => {
     setFormData({ ...formData, statusMenikah: val });
     if (val === "Sudah Menikah") {
-      // Set default opposite gender for pasangan
       setPasangan((prev) => ({
         ...prev,
         jenisKelamin: formData.jenisKelamin === "Laki-laki" ? "Perempuan" : "Laki-laki",
@@ -162,7 +161,7 @@ export default function RegisterPage() {
       const data = await res.json();
 
       if (res.ok) {
-        // Template pesan WA sesuai instruksi persis:
+        // Template pesan WA persis sesuai permintaan:
         // Shalom admin....
         // Saya [nama kepala keluarga], username [username] sudah melakukan registrasi akun mohon untuk di cek akun saya.
         const message = `Shalom admin....\nSaya ${formData.name}, username ${formData.username} sudah melakukan registrasi akun mohon untuk di cek akun saya.`;
@@ -171,11 +170,10 @@ export default function RegisterPage() {
         setWaLink(generatedWaUrl);
         setRegistrationSuccess(true);
 
-        // Buka WhatsApp langsung di tab baru
         try {
           window.open(generatedWaUrl, "_blank");
         } catch {
-          // Jika diblokir oleh popup blocker browser, fallback tersedia di UI
+          // Jika popup browser memblokir, fallback tombol tersedia
         }
       } else {
         setError(data.error || "Gagal melakukan registrasi");
@@ -192,23 +190,24 @@ export default function RegisterPage() {
   // SUCCESS SCREEN
   if (registrationSuccess) {
     return (
-      <div style={{ maxWidth: "560px", margin: "60px auto", padding: "20px" }}>
+      <div style={{ maxWidth: "560px", margin: "60px auto 100px", padding: "0 20px" }}>
         <div
           style={{
-            background: "black",
+            background: "var(--gradient-card)",
             padding: "40px 30px",
             borderRadius: "16px",
-            boxShadow: "0 10px 25px rgba(0,0,0,0.08)",
+            boxShadow: "0 16px 50px rgba(0,0,0,0.8), 0 0 25px rgba(212, 160, 23, 0.08)",
             textAlign: "center",
-            border: "1px solid var(--color-border)",
+            border: "1px solid rgba(212, 160, 23, 0.3)",
           }}
         >
           <div
             style={{
               width: "64px",
               height: "64px",
-              background: "#dcfce7",
-              color: "#16a34a",
+              background: "rgba(76, 175, 80, 0.15)",
+              color: "#4ade80",
+              border: "1px solid rgba(76, 175, 80, 0.4)",
               borderRadius: "50%",
               display: "flex",
               alignItems: "center",
@@ -219,18 +218,18 @@ export default function RegisterPage() {
             <CheckCircle2 size={36} />
           </div>
 
-          <h2 style={{ fontSize: "1.6rem", fontWeight: "bold", marginBottom: "12px", color: "#111827" }}>
+          <h2 style={{ fontSize: "1.6rem", fontWeight: "bold", marginBottom: "12px", color: "var(--color-white)" }}>
             Pendaftaran Berhasil!
           </h2>
 
-          <p style={{ color: "#4b5563", fontSize: "0.95rem", lineHeight: "1.6", marginBottom: "24px" }}>
-            Terima kasih <strong>{formData.name}</strong>. Data registrasi keluarga Anda telah berhasil tersimpan di sistem gereja dan saat ini sedang <strong>menunggu persetujuan (approval) admin</strong>.
+          <p style={{ color: "var(--color-text-secondary)", fontSize: "0.95rem", lineHeight: "1.6", marginBottom: "24px" }}>
+            Terima kasih <strong style={{ color: "var(--gold-300)" }}>{formData.name}</strong>. Data registrasi keluarga Anda telah berhasil tersimpan di sistem gereja dan saat ini sedang <strong style={{ color: "var(--gold-300)" }}>menunggu persetujuan admin</strong>.
           </p>
 
           <div
             style={{
-              background: "#eff6ff",
-              border: "1px solid #bfdbfe",
+              background: "rgba(212, 160, 23, 0.1)",
+              border: "1px solid rgba(212, 160, 23, 0.3)",
               borderRadius: "10px",
               padding: "16px",
               marginBottom: "28px",
@@ -238,11 +237,11 @@ export default function RegisterPage() {
             }}
           >
             <div style={{ display: "flex", gap: "10px", alignItems: "flex-start" }}>
-              <MessageCircle size={22} style={{ color: "#2563eb", flexShrink: 0, marginTop: "2px" }} />
-              <div style={{ fontSize: "0.88rem", color: "#1e40af", lineHeight: "1.5" }}>
-                <strong>Konfirmasi WhatsApp ke Admin:</strong>
-                <p style={{ margin: "4px 0 0" }}>
-                  Jika WhatsApp belum terbuka otomatis, silakan klik tombol hijau di bawah untuk mengirim pesan konfirmasi ke Admin agar akun Anda segera diaktifkan.
+              <MessageCircle size={22} style={{ color: "var(--gold-400)", flexShrink: 0, marginTop: "2px" }} />
+              <div style={{ fontSize: "0.88rem", color: "var(--color-text)", lineHeight: "1.5" }}>
+                <strong style={{ color: "var(--gold-300)" }}>Konfirmasi WhatsApp ke Admin:</strong>
+                <p style={{ margin: "4px 0 0", color: "var(--color-text-secondary)" }}>
+                  Jika WhatsApp belum terbuka otomatis, silakan klik tombol di bawah untuk mengirim pesan konfirmasi ke Admin agar akun Anda segera diaktifkan.
                 </p>
               </div>
             </div>
@@ -256,8 +255,8 @@ export default function RegisterPage() {
               className="btn"
               style={{
                 backgroundColor: "#25D366",
-                color: "black",
-                fontWeight: 600,
+                color: "#0a0a0a",
+                fontWeight: 700,
                 padding: "14px",
                 borderRadius: "10px",
                 display: "flex",
@@ -266,7 +265,7 @@ export default function RegisterPage() {
                 gap: "8px",
                 fontSize: "1rem",
                 textDecoration: "none",
-                boxShadow: "0 4px 10px rgba(37, 211, 102, 0.3)",
+                boxShadow: "0 4px 14px rgba(37, 211, 102, 0.3)",
               }}
             >
               <Send size={18} />
@@ -299,11 +298,11 @@ export default function RegisterPage() {
     <div style={{ maxWidth: "680px", margin: "40px auto 80px", padding: "0 20px" }}>
       <div
         style={{
-          background: "black",
+          background: "var(--gradient-card)",
           padding: "36px 30px",
           borderRadius: "16px",
-          boxShadow: "0 10px 30px rgba(0,0,0,0.06)",
-          border: "1px solid var(--color-border)",
+          boxShadow: "0 16px 50px rgba(0, 0, 0, 0.8), 0 0 25px rgba(212, 160, 23, 0.08)",
+          border: "1px solid rgba(212, 160, 23, 0.25)",
         }}
       >
         {/* Header Form */}
@@ -325,7 +324,7 @@ export default function RegisterPage() {
               priority
             />
           </div>
-          <h1 style={{ fontSize: "1.7rem", fontWeight: "bold", margin: "0 0 6px" }}>
+          <h1 style={{ fontSize: "1.7rem", fontWeight: "bold", margin: "0 0 6px", color: "var(--color-white)" }}>
             Pendaftaran Akun Jemaat
           </h1>
           <p style={{ color: "var(--color-text-secondary)", fontSize: "0.9rem" }}>
@@ -336,9 +335,9 @@ export default function RegisterPage() {
         {error && (
           <div
             style={{
-              background: "#fee2e2",
-              border: "1px solid #fca5a5",
-              color: "#991b1b",
+              background: "rgba(239, 83, 80, 0.15)",
+              border: "1px solid rgba(239, 83, 80, 0.4)",
+              color: "#fca5a5",
               borderRadius: "8px",
               padding: "12px 16px",
               marginBottom: "24px",
@@ -348,7 +347,7 @@ export default function RegisterPage() {
               fontSize: "0.9rem",
             }}
           >
-            <AlertCircle size={18} style={{ flexShrink: 0 }} />
+            <AlertCircle size={18} style={{ flexShrink: 0, color: "var(--color-error)" }} />
             <span>{error}</span>
           </div>
         )}
@@ -356,16 +355,23 @@ export default function RegisterPage() {
         <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: "28px" }}>
           
           {/* SECTION 1: AKUN LOGIN */}
-          <div style={{ background: "#000000ff", padding: "18px", borderRadius: "10px", border: "1px solid #e2e8f0" }}>
-            <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "14px", color: "var(--color-primary)", fontWeight: 700, fontSize: "1rem" }}>
+          <div
+            style={{
+              background: "rgba(0, 0, 0, 0.35)",
+              padding: "20px",
+              borderRadius: "12px",
+              border: "1px solid rgba(212, 160, 23, 0.2)",
+            }}
+          >
+            <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "14px", color: "var(--gold-400)", fontWeight: 700, fontSize: "1rem" }}>
               <Lock size={18} />
               <span>1. Akun Login</span>
             </div>
 
             <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: "14px" }}>
               <div className="form-group" style={{ margin: 0 }}>
-                <label className="form-label" style={{ fontSize: "0.85rem", fontWeight: 600 }}>
-                  Username <span style={{ color: "red" }}>*</span>
+                <label className="form-label" style={{ fontSize: "0.85rem", fontWeight: 600, color: "var(--color-text-secondary)" }}>
+                  Username <span style={{ color: "var(--gold-400)" }}>*</span>
                 </label>
                 <input
                   type="text"
@@ -378,8 +384,8 @@ export default function RegisterPage() {
               </div>
 
               <div className="form-group" style={{ margin: 0 }}>
-                <label className="form-label" style={{ fontSize: "0.85rem", fontWeight: 600 }}>
-                  Password <span style={{ color: "red" }}>*</span>
+                <label className="form-label" style={{ fontSize: "0.85rem", fontWeight: 600, color: "var(--color-text-secondary)" }}>
+                  Password <span style={{ color: "var(--gold-400)" }}>*</span>
                 </label>
                 <div style={{ position: "relative" }}>
                   <input
@@ -402,7 +408,7 @@ export default function RegisterPage() {
                       transform: "translateY(-50%)",
                       background: "none",
                       border: "none",
-                      color: "#6b7280",
+                      color: "var(--color-text-muted)",
                       cursor: "pointer",
                     }}
                   >
@@ -414,16 +420,23 @@ export default function RegisterPage() {
           </div>
 
           {/* SECTION 2: BIODATA KEPALA KELUARGA */}
-          <div>
-            <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "14px", color: "var(--color-primary)", fontWeight: 700, fontSize: "1rem" }}>
+          <div
+            style={{
+              background: "rgba(0, 0, 0, 0.35)",
+              padding: "20px",
+              borderRadius: "12px",
+              border: "1px solid rgba(212, 160, 23, 0.2)",
+            }}
+          >
+            <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "14px", color: "var(--gold-400)", fontWeight: 700, fontSize: "1rem" }}>
               <User size={18} />
               <span>2. Biodata Kepala Keluarga</span>
             </div>
 
             <div style={{ display: "flex", flexDirection: "column", gap: "14px" }}>
               <div className="form-group" style={{ margin: 0 }}>
-                <label className="form-label" style={{ fontSize: "0.85rem", fontWeight: 600 }}>
-                  NIK (Kepala Keluarga) <span style={{ color: "red" }}>*</span>
+                <label className="form-label" style={{ fontSize: "0.85rem", fontWeight: 600, color: "var(--color-text-secondary)" }}>
+                  NIK (Kepala Keluarga) <span style={{ color: "var(--gold-400)" }}>*</span>
                 </label>
                 <input
                   type="text"
@@ -436,8 +449,8 @@ export default function RegisterPage() {
               </div>
 
               <div className="form-group" style={{ margin: 0 }}>
-                <label className="form-label" style={{ fontSize: "0.85rem", fontWeight: 600 }}>
-                  Nama Lengkap Kepala Keluarga <span style={{ color: "red" }}>*</span>
+                <label className="form-label" style={{ fontSize: "0.85rem", fontWeight: 600, color: "var(--color-text-secondary)" }}>
+                  Nama Lengkap Kepala Keluarga <span style={{ color: "var(--gold-400)" }}>*</span>
                 </label>
                 <input
                   type="text"
@@ -451,8 +464,8 @@ export default function RegisterPage() {
 
               <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "14px" }}>
                 <div className="form-group" style={{ margin: 0 }}>
-                  <label className="form-label" style={{ fontSize: "0.85rem", fontWeight: 600 }}>
-                    Umur (Tahun) <span style={{ color: "red" }}>*</span>
+                  <label className="form-label" style={{ fontSize: "0.85rem", fontWeight: 600, color: "var(--color-text-secondary)" }}>
+                    Umur (Tahun) <span style={{ color: "var(--gold-400)" }}>*</span>
                   </label>
                   <input
                     type="number"
@@ -467,8 +480,8 @@ export default function RegisterPage() {
                 </div>
 
                 <div className="form-group" style={{ margin: 0 }}>
-                  <label className="form-label" style={{ fontSize: "0.85rem", fontWeight: 600 }}>
-                    Jenis Kelamin <span style={{ color: "red" }}>*</span>
+                  <label className="form-label" style={{ fontSize: "0.85rem", fontWeight: 600, color: "var(--color-text-secondary)" }}>
+                    Jenis Kelamin <span style={{ color: "var(--gold-400)" }}>*</span>
                   </label>
                   <select
                     className="form-input"
@@ -482,8 +495,8 @@ export default function RegisterPage() {
               </div>
 
               <div className="form-group" style={{ margin: 0 }}>
-                <label className="form-label" style={{ fontSize: "0.85rem", fontWeight: 600 }}>
-                  Status Pernikahan <span style={{ color: "red" }}>*</span>
+                <label className="form-label" style={{ fontSize: "0.85rem", fontWeight: 600, color: "var(--color-text-secondary)" }}>
+                  Status Pernikahan <span style={{ color: "var(--gold-400)" }}>*</span>
                 </label>
                 <select
                   className="form-input"
@@ -501,10 +514,10 @@ export default function RegisterPage() {
           {isMarried && (
             <div
               style={{
-                background: "#000000ff",
+                background: "rgba(212, 160, 23, 0.06)",
                 padding: "20px",
                 borderRadius: "12px",
-                border: "1px solid #f5d0fe",
+                border: "1px solid rgba(212, 160, 23, 0.3)",
               }}
             >
               <div
@@ -512,8 +525,8 @@ export default function RegisterPage() {
                   display: "flex",
                   alignItems: "center",
                   gap: "8px",
-                  marginBottom: "14px",
-                  color: "#a21caf",
+                  marginBottom: "8px",
+                  color: "var(--gold-400)",
                   fontWeight: 700,
                   fontSize: "1rem",
                 }}
@@ -521,14 +534,14 @@ export default function RegisterPage() {
                 <Heart size={18} />
                 <span>3. Biodata Pasangan (Istri / Suami)</span>
               </div>
-              <p style={{ fontSize: "0.82rem", color: "#701a75", marginTop: "-8px", marginBottom: "14px" }}>
+              <p style={{ fontSize: "0.82rem", color: "var(--color-text-secondary)", marginTop: "0", marginBottom: "16px" }}>
                 Informasi pasangan hidup (tanpa perlu mengisi status pernikahan)
               </p>
 
               <div style={{ display: "flex", flexDirection: "column", gap: "14px" }}>
                 <div className="form-group" style={{ margin: 0 }}>
-                  <label className="form-label" style={{ fontSize: "0.85rem", fontWeight: 600 }}>
-                    Nama Lengkap Pasangan <span style={{ color: "red" }}>*</span>
+                  <label className="form-label" style={{ fontSize: "0.85rem", fontWeight: 600, color: "var(--color-text-secondary)" }}>
+                    Nama Lengkap Pasangan <span style={{ color: "var(--gold-400)" }}>*</span>
                   </label>
                   <input
                     type="text"
@@ -542,8 +555,8 @@ export default function RegisterPage() {
 
                 <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "14px" }}>
                   <div className="form-group" style={{ margin: 0 }}>
-                    <label className="form-label" style={{ fontSize: "0.85rem", fontWeight: 600 }}>
-                      Umur Pasangan (Tahun) <span style={{ color: "red" }}>*</span>
+                    <label className="form-label" style={{ fontSize: "0.85rem", fontWeight: 600, color: "var(--color-text-secondary)" }}>
+                      Umur Pasangan (Tahun) <span style={{ color: "var(--gold-400)" }}>*</span>
                     </label>
                     <input
                       type="number"
@@ -558,8 +571,8 @@ export default function RegisterPage() {
                   </div>
 
                   <div className="form-group" style={{ margin: 0 }}>
-                    <label className="form-label" style={{ fontSize: "0.85rem", fontWeight: 600 }}>
-                      Jenis Kelamin <span style={{ color: "red" }}>*</span>
+                    <label className="form-label" style={{ fontSize: "0.85rem", fontWeight: 600, color: "var(--color-text-secondary)" }}>
+                      Jenis Kelamin <span style={{ color: "var(--gold-400)" }}>*</span>
                     </label>
                     <select
                       className="form-input"
@@ -573,8 +586,8 @@ export default function RegisterPage() {
                 </div>
 
                 <div className="form-group" style={{ margin: 0 }}>
-                  <label className="form-label" style={{ fontSize: "0.85rem", fontWeight: 600 }}>
-                    NIK Pasangan <span style={{ fontSize: "0.8rem", color: "#6b7280" }}>(Boleh dikosongkan)</span>
+                  <label className="form-label" style={{ fontSize: "0.85rem", fontWeight: 600, color: "var(--color-text-secondary)" }}>
+                    NIK Pasangan <span style={{ fontSize: "0.8rem", color: "var(--color-text-muted)" }}>(Boleh dikosongkan)</span>
                   </label>
                   <input
                     type="text"
@@ -591,10 +604,10 @@ export default function RegisterPage() {
           {/* SECTION 4: DATA ANAK */}
           <div
             style={{
-              background: "#000000ff",
+              background: "rgba(0, 0, 0, 0.35)",
               padding: "20px",
               borderRadius: "12px",
-              border: "1px solid #bfdbfe",
+              border: "1px solid rgba(212, 160, 23, 0.2)",
             }}
           >
             <div
@@ -608,22 +621,22 @@ export default function RegisterPage() {
               }}
             >
               <div>
-                <div style={{ display: "flex", alignItems: "center", gap: "8px", color: "#f1e42cff", fontWeight: 700, fontSize: "1rem" }}>
+                <div style={{ display: "flex", alignItems: "center", gap: "8px", color: "var(--gold-400)", fontWeight: 700, fontSize: "1rem" }}>
                   <Baby size={18} />
                   <span>{isMarried ? "4. Data Anak" : "3. Data Anak"}</span>
                 </div>
-                <p style={{ fontSize: "0.82rem", color: "#f1e42cff", margin: "2px 0 0" }}>
-                  Jumlah Anak Terdaftar: <strong>{anak.length} anak</strong>
+                <p style={{ fontSize: "0.82rem", color: "var(--color-text-secondary)", margin: "2px 0 0" }}>
+                  Jumlah Anak Terdaftar: <strong style={{ color: "var(--gold-300)" }}>{anak.length} anak</strong>
                 </p>
               </div>
 
               <button
                 type="button"
                 onClick={handleAddAnak}
-                className="btn btn-primary"
+                className="btn btn-outline"
                 style={{
                   fontSize: "0.82rem",
-                  padding: "0.4rem 0.8rem",
+                  padding: "0.4rem 0.85rem",
                   display: "flex",
                   alignItems: "center",
                   gap: "4px",
@@ -636,16 +649,16 @@ export default function RegisterPage() {
             {anak.length === 0 ? (
               <div
                 style={{
-                  background: "black",
+                  background: "rgba(0, 0, 0, 0.3)",
                   padding: "16px",
                   borderRadius: "8px",
                   textAlign: "center",
-                  color: "#64748b",
+                  color: "var(--color-text-muted)",
                   fontSize: "0.88rem",
-                  border: "1px dashed #cbd5e1",
+                  border: "1px dashed rgba(212, 160, 23, 0.2)",
                 }}
               >
-                Belum ada data anak yang ditambahkan. Klik tombol <strong>+ Tambah Anak</strong> di atas jika memiliki anak.
+                Belum ada data anak yang ditambahkan. Klik tombol <strong style={{ color: "var(--gold-400)" }}>+ Tambah Anak</strong> di atas jika memiliki anak.
               </div>
             ) : (
               <div style={{ display: "flex", flexDirection: "column", gap: "14px" }}>
@@ -653,12 +666,12 @@ export default function RegisterPage() {
                   <div
                     key={idx}
                     style={{
-                      background: "black",
+                      background: "rgba(22, 22, 22, 0.9)",
                       padding: "16px",
                       borderRadius: "10px",
-                      border: "1px solid #dbeafe",
+                      border: "1px solid rgba(212, 160, 23, 0.2)",
                       position: "relative",
-                      boxShadow: "0 1px 3px rgba(0,0,0,0.03)",
+                      boxShadow: "0 4px 12px rgba(0,0,0,0.3)",
                     }}
                   >
                     <div
@@ -667,20 +680,20 @@ export default function RegisterPage() {
                         justifyContent: "space-between",
                         alignItems: "center",
                         marginBottom: "12px",
-                        borderBottom: "1px solid #f1f5f9",
+                        borderBottom: "1px solid var(--color-border)",
                         paddingBottom: "8px",
                       }}
                     >
-                      <span style={{ fontWeight: 700, fontSize: "0.9rem", color: "#f1e42cff" }}>
+                      <span style={{ fontWeight: 700, fontSize: "0.9rem", color: "var(--gold-300)" }}>
                         Biodata Anak ke-{idx + 1}
                       </span>
                       <button
                         type="button"
                         onClick={() => handleRemoveAnak(idx)}
                         style={{
-                          background: "#fee2e2",
-                          color: "#dc2626",
-                          border: "none",
+                          background: "rgba(239, 83, 80, 0.15)",
+                          color: "#ef5350",
+                          border: "1px solid rgba(239, 83, 80, 0.3)",
                           borderRadius: "6px",
                           padding: "4px 8px",
                           fontSize: "0.78rem",
@@ -697,8 +710,8 @@ export default function RegisterPage() {
 
                     <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
                       <div className="form-group" style={{ margin: 0 }}>
-                        <label className="form-label" style={{ fontSize: "0.82rem", fontWeight: 600 }}>
-                          Nama Anak <span style={{ color: "red" }}>*</span>
+                        <label className="form-label" style={{ fontSize: "0.82rem", fontWeight: 600, color: "var(--color-text-secondary)" }}>
+                          Nama Anak <span style={{ color: "var(--gold-400)" }}>*</span>
                         </label>
                         <input
                           type="text"
@@ -712,8 +725,8 @@ export default function RegisterPage() {
 
                       <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px" }}>
                         <div className="form-group" style={{ margin: 0 }}>
-                          <label className="form-label" style={{ fontSize: "0.82rem", fontWeight: 600 }}>
-                            Umur Anak (Tahun) <span style={{ color: "red" }}>*</span>
+                          <label className="form-label" style={{ fontSize: "0.82rem", fontWeight: 600, color: "var(--color-text-secondary)" }}>
+                            Umur Anak (Tahun) <span style={{ color: "var(--gold-400)" }}>*</span>
                           </label>
                           <input
                             type="number"
@@ -728,8 +741,8 @@ export default function RegisterPage() {
                         </div>
 
                         <div className="form-group" style={{ margin: 0 }}>
-                          <label className="form-label" style={{ fontSize: "0.82rem", fontWeight: 600 }}>
-                            Jenis Kelamin <span style={{ color: "red" }}>*</span>
+                          <label className="form-label" style={{ fontSize: "0.82rem", fontWeight: 600, color: "var(--color-text-secondary)" }}>
+                            Jenis Kelamin <span style={{ color: "var(--gold-400)" }}>*</span>
                           </label>
                           <select
                             className="form-input"
@@ -743,8 +756,8 @@ export default function RegisterPage() {
                       </div>
 
                       <div className="form-group" style={{ margin: 0 }}>
-                        <label className="form-label" style={{ fontSize: "0.82rem", fontWeight: 600 }}>
-                          NIK Anak <span style={{ fontSize: "0.78rem", color: "#6b7280" }}>(Boleh dikosongkan)</span>
+                        <label className="form-label" style={{ fontSize: "0.82rem", fontWeight: 600, color: "var(--color-text-secondary)" }}>
+                          NIK Anak <span style={{ fontSize: "0.78rem", color: "var(--color-text-muted)" }}>(Boleh dikosongkan)</span>
                         </label>
                         <input
                           type="text"
@@ -775,6 +788,7 @@ export default function RegisterPage() {
                 display: "flex",
                 alignItems: "center",
                 gap: "8px",
+                fontWeight: 700,
               }}
             >
               {loading ? (
@@ -787,7 +801,7 @@ export default function RegisterPage() {
               )}
             </button>
 
-            <p style={{ textAlign: "center", fontSize: "0.85rem", color: "#6b7280", marginTop: "12px" }}>
+            <p style={{ textAlign: "center", fontSize: "0.85rem", color: "var(--color-text-muted)", marginTop: "12px" }}>
               Setelah menekan tombol daftar, data Anda akan langsung terkirim ke sistem dan diarahkan ke WhatsApp Admin untuk verifikasi.
             </p>
 

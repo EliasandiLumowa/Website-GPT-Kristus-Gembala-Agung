@@ -59,8 +59,8 @@ export default async function AdminDashboard() {
       {stats.pendingUsers > 0 && (
         <div
           style={{
-            background: "#fffbeb",
-            border: "1px solid #fde68a",
+            background: "rgba(212, 160, 23, 0.1)",
+            border: "1px solid rgba(212, 160, 23, 0.35)",
             borderRadius: "var(--radius-lg)",
             padding: "1rem 1.25rem",
             marginBottom: "var(--space-xl)",
@@ -69,18 +69,18 @@ export default async function AdminDashboard() {
             justifyContent: "space-between",
             flexWrap: "wrap",
             gap: "1rem",
-            boxShadow: "0 2px 4px rgba(245, 158, 11, 0.05)"
+            boxShadow: "0 8px 24px rgba(0, 0, 0, 0.4), 0 0 20px rgba(212, 160, 23, 0.08)"
           }}
         >
           <div style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
-            <div style={{ background: "#fef3c7", padding: "8px", borderRadius: "8px", color: "#d97706" }}>
+            <div style={{ background: "rgba(212, 160, 23, 0.2)", padding: "8px", borderRadius: "8px", color: "var(--gold-400)" }}>
               <AlertCircle size={24} />
             </div>
             <div>
-              <h4 style={{ margin: 0, color: "#92400e", fontSize: "0.98rem", fontWeight: 700 }}>
+              <h4 style={{ margin: 0, color: "var(--gold-300)", fontSize: "0.98rem", fontWeight: 700 }}>
                 {stats.pendingUsers} Akun Jemaat Menunggu Persetujuan
               </h4>
-              <p style={{ margin: "2px 0 0", color: "#b45309", fontSize: "0.85rem" }}>
+              <p style={{ margin: "2px 0 0", color: "var(--color-text-secondary)", fontSize: "0.85rem" }}>
                 Ada pendaftaran akun baru yang belum disetujui. Silakan cek data keluarga dan setujui akun.
               </p>
             </div>

@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { Menu, X, ChevronDown, User, LogOut, Shield, UserPlus } from "lucide-react";
+import { Menu, X, ChevronDown, User, LogOut, UserPlus } from "lucide-react";
 import { useSession, signOut } from "next-auth/react";
 
 interface NavItem {
@@ -43,14 +43,13 @@ export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const pathname = usePathname();
   
-  // Ambil data session untuk nama jemaat & role
+  // Ambil data session untuk nama jemaat
   const { data: session, status } = useSession();
 
   // Jangan tampilkan navbar di halaman admin
   if (pathname?.startsWith("/admin")) return null;
 
   const isLoggedIn = status === "authenticated";
-  const userRole = (session?.user as any)?.role;
   const userName = session?.user?.name || (session?.user as any)?.username || "Jemaat";
 
   // Filter menu navigasi berdasarkan status login
@@ -92,7 +91,17 @@ export default function Navbar() {
   return (
     <>
       <nav className={`navbar ${scrolled ? "scrolled" : ""}`}>
-        <div className="container">
+        <div
+          className="container"
+          style={{
+            maxWidth: "100%",
+            width: "100%",
+            padding: "0 clamp(1rem, 2.5vw, 2.5rem)",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+          }}
+        >
           <Link href="/" className="navbar-brand">
             <span
               className="navbar-brand-icon"
@@ -170,7 +179,8 @@ export default function Navbar() {
                   display: "flex",
                   alignItems: "center",
                   gap: "0.5rem",
-                  flexWrap: "wrap",
+                  flexWrap: "nowrap",
+                  whiteSpace: "nowrap",
                 }}
               >
                 <div
@@ -178,35 +188,19 @@ export default function Navbar() {
                     display: "flex",
                     alignItems: "center",
                     gap: "6px",
-                    background: "rgba(var(--color-primary-rgb, 197, 160, 89), 0.12)",
+                    background: "rgba(212, 160, 23, 0.15)",
+                    border: "1px solid rgba(212, 160, 23, 0.3)",
                     padding: "0.35rem 0.75rem",
                     borderRadius: "999px",
                     fontSize: "0.82rem",
-                    color: "var(--color-text-primary)",
+                    color: "var(--gold-300)",
                     fontWeight: 600,
+                    whiteSpace: "nowrap",
                   }}
                 >
                   <User size={14} style={{ color: "var(--color-primary)" }} />
                   <span>Shalom, {userName}</span>
                 </div>
-
-                {userRole === "ADMIN" && (
-                  <Link
-                    href="/admin"
-                    className="btn btn-outline"
-                    style={{
-                      fontSize: "0.8rem",
-                      padding: "0.35rem 0.65rem",
-                      display: "flex",
-                      gap: "4px",
-                      alignItems: "center",
-                    }}
-                    onClick={() => setIsOpen(false)}
-                  >
-                    <Shield size={13} />
-                    Admin
-                  </Link>
-                )}
 
                 <button
                   onClick={() => {
@@ -222,10 +216,11 @@ export default function Navbar() {
                     gap: "4px",
                     alignItems: "center",
                     background: "transparent",
-                    border: "1px solid #fca5a5",
-                    color: "#dc2626",
+                    border: "1px solid rgba(239, 83, 80, 0.5)",
+                    color: "#ef5350",
                     cursor: "pointer",
                     borderRadius: "var(--radius-md)",
+                    whiteSpace: "nowrap",
                   }}
                 >
                   <LogOut size={13} />
@@ -243,6 +238,8 @@ export default function Navbar() {
                   display: "flex",
                   alignItems: "center",
                   gap: "0.5rem",
+                  flexWrap: "nowrap",
+                  whiteSpace: "nowrap",
                 }}
               >
                 <Link
@@ -254,6 +251,7 @@ export default function Navbar() {
                     display: "flex",
                     gap: "0.4rem",
                     alignItems: "center",
+                    whiteSpace: "nowrap",
                   }}
                   onClick={() => setIsOpen(false)}
                 >
@@ -270,6 +268,7 @@ export default function Navbar() {
                     display: "flex",
                     gap: "0.4rem",
                     alignItems: "center",
+                    whiteSpace: "nowrap",
                   }}
                   onClick={() => setIsOpen(false)}
                 >

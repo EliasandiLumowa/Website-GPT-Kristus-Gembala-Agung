@@ -32,7 +32,7 @@ function LoginForm() {
   const [isPendingApproval, setIsPendingApproval] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  const ADMIN_WHATSAPP = process.env.NEXT_PUBLIC_ADMIN_WHATSAPP || "682190075556";
+  const ADMIN_WHATSAPP = process.env.NEXT_PUBLIC_ADMIN_WHATSAPP || "6282190075556";
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -75,11 +75,11 @@ function LoginForm() {
     <div style={{ maxWidth: "460px", margin: "60px auto 100px", padding: "0 20px" }}>
       <div
         style={{
-          background: "black",
+          background: "var(--gradient-card)",
           padding: "36px 30px",
           borderRadius: "16px",
-          boxShadow: "0 10px 25px rgba(0,0,0,0.06)",
-          border: "1px solid var(--color-border)",
+          boxShadow: "0 16px 50px rgba(0, 0, 0, 0.8), 0 0 25px rgba(212, 160, 23, 0.08)",
+          border: "1px solid rgba(212, 160, 23, 0.25)",
         }}
       >
         {/* Logo and Header */}
@@ -101,7 +101,7 @@ function LoginForm() {
               priority
             />
           </div>
-          <h1 style={{ fontSize: "1.6rem", fontWeight: "bold", margin: "0 0 6px" }}>
+          <h1 style={{ fontSize: "1.6rem", fontWeight: "bold", margin: "0 0 6px", color: "var(--color-white)" }}>
             Masuk Jemaat
           </h1>
           <p style={{ color: "var(--color-text-secondary)", fontSize: "0.9rem" }}>
@@ -112,9 +112,9 @@ function LoginForm() {
         {isRegistered && !error && (
           <div
             style={{
-              background: "#dcfce7",
-              border: "1px solid #86efac",
-              color: "#166534",
+              background: "rgba(76, 175, 80, 0.15)",
+              border: "1px solid rgba(76, 175, 80, 0.4)",
+              color: "#81c784",
               borderRadius: "10px",
               padding: "12px 14px",
               marginBottom: "20px",
@@ -130,19 +130,19 @@ function LoginForm() {
         {isPendingApproval ? (
           <div
             style={{
-              background: "#fffbeb",
-              border: "1px solid #fde68a",
-              color: "#92400e",
+              background: "rgba(212, 160, 23, 0.12)",
+              border: "1px solid rgba(212, 160, 23, 0.35)",
+              color: "var(--gold-200)",
               borderRadius: "10px",
               padding: "14px",
               marginBottom: "20px",
             }}
           >
             <div style={{ display: "flex", gap: "10px", alignItems: "flex-start" }}>
-              <Clock size={20} style={{ color: "#d97706", flexShrink: 0, marginTop: "2px" }} />
+              <Clock size={20} style={{ color: "var(--gold-400)", flexShrink: 0, marginTop: "2px" }} />
               <div style={{ fontSize: "0.88rem", lineHeight: "1.5" }}>
-                <strong>Akun Menunggu Persetujuan Admin</strong>
-                <p style={{ margin: "4px 0 10px" }}>
+                <strong style={{ color: "var(--gold-300)" }}>Akun Menunggu Persetujuan Admin</strong>
+                <p style={{ margin: "4px 0 10px", color: "var(--color-text-secondary)" }}>
                   Akun Anda telah terdaftar namun belum disetujui oleh Admin. Anda dapat menghubungi admin melalui WhatsApp untuk konfirmasi aktivasi.
                 </p>
                 <a
@@ -152,15 +152,15 @@ function LoginForm() {
                   className="btn"
                   style={{
                     backgroundColor: "#25D366",
-                    color: "white",
-                    padding: "8px 12px",
+                    color: "#0a0a0a",
+                    padding: "8px 14px",
                     borderRadius: "6px",
                     fontSize: "0.82rem",
                     display: "inline-flex",
                     alignItems: "center",
                     gap: "6px",
                     textDecoration: "none",
-                    fontWeight: 600,
+                    fontWeight: 700,
                   }}
                 >
                   <Send size={14} /> Hubungi Admin via WhatsApp
@@ -171,9 +171,9 @@ function LoginForm() {
         ) : error ? (
           <div
             style={{
-              background: "#fee2e2",
-              border: "1px solid #fca5a5",
-              color: "#991b1b",
+              background: "rgba(239, 83, 80, 0.15)",
+              border: "1px solid rgba(239, 83, 80, 0.4)",
+              color: "#fca5a5",
               borderRadius: "10px",
               padding: "12px 14px",
               marginBottom: "20px",
@@ -183,7 +183,7 @@ function LoginForm() {
               fontSize: "0.88rem",
             }}
           >
-            <AlertCircle size={18} style={{ flexShrink: 0 }} />
+            <AlertCircle size={18} style={{ flexShrink: 0, color: "var(--color-error)" }} />
             <span>{error}</span>
           </div>
         ) : null}
@@ -191,7 +191,7 @@ function LoginForm() {
         {/* Login Form */}
         <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
           <div className="form-group" style={{ margin: 0 }}>
-            <label className="form-label" style={{ fontSize: "0.85rem", fontWeight: 600 }}>
+            <label className="form-label" style={{ fontSize: "0.85rem", fontWeight: 600, color: "var(--color-text-secondary)" }}>
               Username
             </label>
             <div style={{ position: "relative" }}>
@@ -202,7 +202,7 @@ function LoginForm() {
                   left: "12px",
                   top: "50%",
                   transform: "translateY(-50%)",
-                  color: "#9ca3af",
+                  color: "var(--gold-400)",
                 }}
               />
               <input
@@ -218,7 +218,7 @@ function LoginForm() {
           </div>
 
           <div className="form-group" style={{ margin: 0 }}>
-            <label className="form-label" style={{ fontSize: "0.85rem", fontWeight: 600 }}>
+            <label className="form-label" style={{ fontSize: "0.85rem", fontWeight: 600, color: "var(--color-text-secondary)" }}>
               Password
             </label>
             <div style={{ position: "relative" }}>
@@ -229,7 +229,7 @@ function LoginForm() {
                   left: "12px",
                   top: "50%",
                   transform: "translateY(-50%)",
-                  color: "#9ca3af",
+                  color: "var(--gold-400)",
                 }}
               />
               <input
@@ -251,7 +251,7 @@ function LoginForm() {
                   transform: "translateY(-50%)",
                   background: "none",
                   border: "none",
-                  color: "#6b7280",
+                  color: "var(--color-text-muted)",
                   cursor: "pointer",
                 }}
               >
@@ -272,6 +272,7 @@ function LoginForm() {
               display: "flex",
               alignItems: "center",
               gap: "8px",
+              fontWeight: 700,
             }}
           >
             <LogIn size={18} />
@@ -303,7 +304,23 @@ function LoginForm() {
             </Link>
           </div>
 
-          
+          <div style={{ textAlign: "center", borderTop: "1px dashed var(--color-border)", paddingTop: "14px" }}>
+            <Link
+              href="/admin/login"
+              style={{
+                fontSize: "0.82rem",
+                color: "var(--color-text-muted)",
+                display: "inline-flex",
+                alignItems: "center",
+                gap: "4px",
+                textDecoration: "none",
+              }}
+            >
+              <Shield size={13} style={{ color: "var(--color-primary)" }} />
+              Masuk sebagai Pengurus (Admin Gereja)
+              <ArrowRight size={12} />
+            </Link>
+          </div>
         </div>
       </div>
     </div>
@@ -312,7 +329,7 @@ function LoginForm() {
 
 export default function LoginPage() {
   return (
-    <Suspense fallback={<div style={{ textAlign: "center", padding: "80px 20px" }}>Memuat...</div>}>
+    <Suspense fallback={<div style={{ textAlign: "center", padding: "80px 20px", color: "var(--color-text-secondary)" }}>Memuat...</div>}>
       <LoginForm />
     </Suspense>
   );

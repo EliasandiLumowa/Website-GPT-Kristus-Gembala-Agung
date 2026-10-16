@@ -408,6 +408,10 @@ textarea.form-input {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  width: 100%;
+  max-width: 100%;
+  padding: 0 clamp(1rem, 2.5vw, 2.5rem);
+  gap: var(--space-md);
 }
 
 .navbar-brand {
@@ -419,6 +423,8 @@ textarea.form-input {
   font-weight: 700;
   color: var(--color-white) !important;
   text-decoration: none;
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 
 .navbar-brand-icon {
@@ -438,16 +444,18 @@ textarea.form-input {
   align-items: center;
   gap: var(--space-xs);
   list-style: none;
+  flex-wrap: nowrap;
 }
 
 .nav-links a {
   color: var(--color-text-secondary);
-  padding: 0.5rem 0.9rem;
+  padding: 0.5rem 0.85rem;
   border-radius: var(--radius-md);
   font-size: 0.9rem;
   font-weight: 500;
   transition: all var(--transition-fast);
   text-decoration: none;
+  white-space: nowrap;
 }
 
 .nav-links a:hover,
@@ -459,12 +467,14 @@ textarea.form-input {
 /* ===== NAVBAR DROPDOWN ===== */
 .nav-item-dropdown {
   position: relative;
+  white-space: nowrap;
 }
 
 .nav-dropdown-toggle {
   display: inline-flex;
   align-items: center;
   gap: 4px;
+  white-space: nowrap;
 }
 
 .nav-dropdown-menu {
@@ -501,7 +511,7 @@ textarea.form-input {
   background: rgba(212, 160, 23, 0.12);
 }
 
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
   .nav-item-dropdown {
     width: 100%;
   }
@@ -531,6 +541,7 @@ textarea.form-input {
   border: none;
   cursor: pointer;
   padding: var(--space-sm);
+  color: var(--color-text);
 }
 
 .nav-toggle span {
@@ -542,7 +553,7 @@ textarea.form-input {
   transition: all var(--transition-base);
 }
 
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
   .nav-toggle {
     display: flex;
   }
