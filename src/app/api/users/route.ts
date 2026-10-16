@@ -12,18 +12,24 @@ export async function GET() {
 
   try {
     const users = await prisma.user.findMany({
-      where: { role: "USER" },
       select: {
         id: true,
+        username: true,
         name: true,
-        email: true,
+        nik: true,
+        umur: true,
+        jenisKelamin: true,
+        statusMenikah: true,
         isActive: true,
         createdAt: true,
+        pasangan: true,
+        anak: true,
       },
       orderBy: { createdAt: "desc" },
     });
     return NextResponse.json(users);
-  } catch {
+  } catch (error) {
+    console.error("Failed to fetch users:", error);
     return NextResponse.json({ error: "Failed to fetch users" }, { status: 500 });
   }
 }

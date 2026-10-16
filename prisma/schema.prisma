@@ -8,15 +8,59 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model User {
+// Tambahkan tabel khusus Admin
+model Admin {
   id        String   @id @default(cuid())
-  email     String   @unique
+  username  String   @unique
   password  String
   name      String
-  role      String   @default("USER")
-  isActive  Boolean  @default(false)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+// Tabel User sekarang murni khusus Jemaat
+model User {
+  id            String    @id @default(cuid())
+  username      String    @unique
+  password      String
+  isActive      Boolean   @default(false) // Status approval admin
+
+  // Data Jemaat / Kepala Keluarga
+  nik           String    @unique
+  name          String
+  umur          Int?
+  jenisKelamin  String
+  tanggalLahir  DateTime?
+  statusMenikah String
+
+  // Relasi Keluarga
+  pasangan      Pasangan?
+  anak          Anak[]
+
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
+model Pasangan {
+  id           String    @id @default(cuid())
+  userId       String    @unique
+  user         User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  nik          String?
+  name         String
+  umur         Int?
+  jenisKelamin String
+  tanggalLahir DateTime?
+}
+
+model Anak {
+  id           String    @id @default(cuid())
+  userId       String
+  user         User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  nik          String?
+  name         String
+  umur         Int?
+  jenisKelamin String
+  tanggalLahir DateTime?
 }
 
 model Sermon {

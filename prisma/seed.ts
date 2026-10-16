@@ -30,20 +30,17 @@ async function main() {
 
   // Create admin user
   const hashedPassword = await bcrypt.hash("admin123", 12);
-  const admin = await prisma.user.upsert({
-    where: { email: "admin@gereja.com" },
-    update: {
-      isActive: true,
-    },
+  const admin = await prisma.admin.upsert({
+    where: { username: "admin" }, // <-- Gunakan username sebagai pencari (wajib ada)
+    update: {}, // <-- Kosongkan karena tidak ada data yang perlu diupdate saat ini
     create: {
-      email: "admin@gereja.com",
+      username: "admin", // <-- Gunakan username
       password: hashedPassword,
       name: "Admin Gereja",
-      role: "ADMIN",
-      isActive: true,
+      // Jangan tambahkan email, role, atau isActive di sini karena tabel Admin tidak membutuhkannya
     },
   });
-  console.log("✅ Admin user created:", admin.email);
+  console.log("✅ Admin user created:", admin.username);
 
   // Create sample quotes
   const quotes = await Promise.all([

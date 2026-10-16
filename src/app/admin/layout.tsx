@@ -16,10 +16,12 @@ import {
   Quote,
   LogOut,
   ChevronRight,
+  Users,
 } from "lucide-react";
 
 const adminNavItems = [
   { href: "/admin", label: "Dashboard", icon: LayoutDashboard },
+  { href: "/admin/users", label: "Kelola Jemaat", icon: Users },
   { href: "/admin/khotbah", label: "Khotbah", icon: Play },
   { href: "/admin/lagu", label: "Lagu & Lyrics", icon: Music },
   { href: "/admin/berita", label: "Berita", icon: Newspaper },

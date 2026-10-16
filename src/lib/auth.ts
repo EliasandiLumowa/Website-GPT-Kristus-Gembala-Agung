@@ -8,39 +8,54 @@ export const authOptions: NextAuthOptions = {
     CredentialsProvider({
       name: "Credentials",
       credentials: {
-        email: { label: "Email", type: "email" },
+        username: { label: "Username", type: "text" }, // Menggunakan username
         password: { label: "Password", type: "password" }
       },
       async authorize(credentials) {
-        if (!credentials?.email || !credentials?.password) {
-          throw new Error("Email dan password wajib diisi");
+        if (!credentials?.username || !credentials?.password) {
+          throw new Error("Username dan password wajib diisi");
         }
 
+        // 1. Cek apakah yang login adalah Admin
+        const admin = await prisma.admin.findUnique({
+          where: { username: credentials.username }
+        });
+
+        if (admin) {
+          const isValid = await bcrypt.compare(credentials.password, admin.password);
+          if (!isValid) throw new Error("Password salah");
+          
+          return {
+            id: admin.id,
+            name: admin.name,
+            username: admin.username,
+            role: "ADMIN",
+            isActive: true, // Admin selalu aktif
+          };
+        }
+
+        // 2. Jika bukan Admin, cek apakah yang login adalah User (Jemaat)
         const user = await prisma.user.findUnique({
-          where: { email: credentials.email }
+          where: { username: credentials.username }
         });
 
         if (!user) {
-          throw new Error("Email tidak ditemukan");
+          throw new Error("Username tidak ditemukan");
         }
 
         const isValid = await bcrypt.compare(credentials.password, user.password);
+        if (!isValid) throw new Error("Password salah");
 
-        if (!isValid) {
-          throw new Error("Password salah");
-        }
-
-        // Cek apakah akun aktif (Admin secara default aktif, Jemaat butuh approval)
-        // Di seed.ts admin role adalah ADMIN
-        if (!user.isActive && user.role !== "ADMIN") {
-           throw new Error("Akun Anda belum diaktifkan oleh Admin.");
+        // Cek apakah akun jemaat sudah di-approve oleh admin
+        if (!user.isActive) {
+          throw new Error("Akun Anda belum disetujui oleh Admin.");
         }
 
         return {
           id: user.id,
-          email: user.email,
           name: user.name,
-          role: user.role,
+          username: user.username,
+          role: "USER",
           isActive: user.isActive,
         };
       }
@@ -49,8 +64,9 @@ export const authOptions: NextAuthOptions = {
   callbacks: {
     async jwt({ token, user }) {
       if (user) {
-        token.role = user.role;
-        token.isActive = user.isActive;
+        token.role = (user as any).role;
+        token.isActive = (user as any).isActive;
+        token.username = (user as any).username;
         token.id = user.id;
       }
       return token;
@@ -59,13 +75,14 @@ export const authOptions: NextAuthOptions = {
       if (token && session.user) {
         (session.user as any).role = token.role;
         (session.user as any).isActive = token.isActive;
+        (session.user as any).username = token.username;
         (session.user as any).id = token.id;
       }
       return session;
     }
   },
   pages: {
-    signIn: "/login", // Default login page untuk jemaat
+    signIn: "/login",
   },
   session: {
     strategy: "jwt",

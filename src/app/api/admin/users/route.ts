@@ -7,26 +7,51 @@ export async function GET() {
   const session = await getServerSession(authOptions);
 
   // Pastikan hanya ADMIN yang bisa mengakses
-  if (!session || session.user.role !== "ADMIN") {
+  if (!session || (session.user as any)?.role !== "ADMIN") {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
   try {
-    // Ambil semua user dengan role USER, urutkan dari yang terbaru
     const users = await prisma.user.findMany({
-      where: { role: "USER" },
       orderBy: { createdAt: "desc" },
       select: {
         id: true,
+        username: true,
+        nik: true,
         name: true,
-        email: true,
+        umur: true,
+        jenisKelamin: true,
+        tanggalLahir: true,
+        statusMenikah: true,
         isActive: true,
         createdAt: true,
+        updatedAt: true,
+        pasangan: {
+          select: {
+            id: true,
+            nik: true,
+            name: true,
+            umur: true,
+            jenisKelamin: true,
+            tanggalLahir: true,
+          }
+        },
+        anak: {
+          select: {
+            id: true,
+            nik: true,
+            name: true,
+            umur: true,
+            jenisKelamin: true,
+            tanggalLahir: true,
+          }
+        }
       }
     });
 
     return NextResponse.json(users);
   } catch (error) {
+    console.error("Gagal mengambil data user:", error);
     return NextResponse.json({ error: "Gagal mengambil data user" }, { status: 500 });
   }
 }

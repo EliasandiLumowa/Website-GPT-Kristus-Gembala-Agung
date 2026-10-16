@@ -4,8 +4,8 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { Menu, X, ChevronDown, User } from "lucide-react";
-import { useSession } from "next-auth/react";
+import { Menu, X, ChevronDown, User, LogOut, Shield, UserPlus } from "lucide-react";
+import { useSession, signOut } from "next-auth/react";
 
 interface NavItem {
   href: string;
@@ -43,13 +43,15 @@ export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const pathname = usePathname();
   
-  // Kita hanya membutuhkan status untuk mengecek login
-  const { status } = useSession();
+  // Ambil data session untuk nama jemaat & role
+  const { data: session, status } = useSession();
 
   // Jangan tampilkan navbar di halaman admin
   if (pathname?.startsWith("/admin")) return null;
 
   const isLoggedIn = status === "authenticated";
+  const userRole = (session?.user as any)?.role;
+  const userName = session?.user?.name || (session?.user as any)?.username || "Jemaat";
 
   // Filter menu navigasi berdasarkan status login
   const filteredNavItems = navItems
@@ -159,23 +161,120 @@ export default function Navbar() {
               );
             })}
 
-            {/* Tombol Masuk HANYA tampil jika user belum login */}
+            {/* Menu Auth ketika USER SUDAH LOGIN */}
+            {status !== "loading" && isLoggedIn && (
+              <li
+                className="nav-auth-item"
+                style={{
+                  marginLeft: "auto",
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "0.5rem",
+                  flexWrap: "wrap",
+                }}
+              >
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "6px",
+                    background: "rgba(var(--color-primary-rgb, 197, 160, 89), 0.12)",
+                    padding: "0.35rem 0.75rem",
+                    borderRadius: "999px",
+                    fontSize: "0.82rem",
+                    color: "var(--color-text-primary)",
+                    fontWeight: 600,
+                  }}
+                >
+                  <User size={14} style={{ color: "var(--color-primary)" }} />
+                  <span>Shalom, {userName}</span>
+                </div>
+
+                {userRole === "ADMIN" && (
+                  <Link
+                    href="/admin"
+                    className="btn btn-outline"
+                    style={{
+                      fontSize: "0.8rem",
+                      padding: "0.35rem 0.65rem",
+                      display: "flex",
+                      gap: "4px",
+                      alignItems: "center",
+                    }}
+                    onClick={() => setIsOpen(false)}
+                  >
+                    <Shield size={13} />
+                    Admin
+                  </Link>
+                )}
+
+                <button
+                  onClick={() => {
+                    setIsOpen(false);
+                    signOut({ callbackUrl: "/" });
+                  }}
+                  className="btn"
+                  title="Keluar dari akun"
+                  style={{
+                    fontSize: "0.8rem",
+                    padding: "0.35rem 0.65rem",
+                    display: "flex",
+                    gap: "4px",
+                    alignItems: "center",
+                    background: "transparent",
+                    border: "1px solid #fca5a5",
+                    color: "#dc2626",
+                    cursor: "pointer",
+                    borderRadius: "var(--radius-md)",
+                  }}
+                >
+                  <LogOut size={13} />
+                  Keluar
+                </button>
+              </li>
+            )}
+
+            {/* Tombol Masuk & Daftar JIKA USER BELUM LOGIN */}
             {status !== "loading" && !isLoggedIn && (
-              <li className="nav-auth-item" style={{ marginLeft: "auto" }}>
+              <li
+                className="nav-auth-item"
+                style={{
+                  marginLeft: "auto",
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "0.5rem",
+                }}
+              >
                 <Link
                   href="/login"
                   className="btn btn-primary"
                   style={{
-                    fontSize: "0.88rem",
-                    padding: "0.4rem 0.8rem",
+                    fontSize: "0.85rem",
+                    padding: "0.38rem 0.75rem",
                     display: "flex",
-                    gap: "0.5rem",
+                    gap: "0.4rem",
                     alignItems: "center",
                   }}
                   onClick={() => setIsOpen(false)}
                 >
-                  <User size={16} />
+                  <User size={15} />
                   Masuk
+                </Link>
+
+                <Link
+                  href="/register"
+                  className="btn btn-outline"
+                  style={{
+                    fontSize: "0.85rem",
+                    padding: "0.38rem 0.75rem",
+                    display: "flex",
+                    gap: "0.4rem",
+                    alignItems: "center",
+                  }}
+                  onClick={() => setIsOpen(false)}
+                >
+                  <UserPlus size={15} />
+                  Daftar
                 </Link>
               </li>
             )}

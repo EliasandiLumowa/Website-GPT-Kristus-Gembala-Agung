@@ -2,43 +2,36 @@
 
 import { useState } from "react";
 import { signIn } from "next-auth/react";
-import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { LogIn } from "lucide-react";
 
 export default function AdminLoginPage() {
-  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState(""); // 1. Ubah state email menjadi username
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-  const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
-    setLoading(true); // <-- 1. Aktifkan loading saat tombol diklik
+    setLoading(true);
 
     try {
-      // Panggil signIn bawaan NextAuth
       const res = await signIn("credentials", {
-        redirect: false, // Penting: cegah NextAuth melakukan hard-redirect otomatis
-        email: email,
+        redirect: false,
+        username: username, // 2. Kirim username, bukan email
         password: password,
       });
 
       if (res?.error) {
-        // Jika salah password / email / akun belum aktif
         setError(res.error);
       } else if (res?.ok) {
-        // JIKA BERHASIL LOGIN:
-        
-        // Ganti router.push dan router.refresh dengan ini:
         window.location.href = "/admin"; 
       }
     } catch (err) {
       setError("Terjadi kesalahan sistem. Silakan coba lagi.");
     } finally {
-      setLoading(false); // <-- 2. Matikan loading apa pun hasilnya (sukses/gagal)
+      setLoading(false);
     }
   };
 
@@ -69,13 +62,13 @@ export default function AdminLoginPage() {
 
         <form onSubmit={handleSubmit}>
           <div className="form-group" style={{ textAlign: "left" }}>
-            <label className="form-label">Email</label>
+            <label className="form-label">Username</label> {/* 3. Ubah label */}
             <input
-              type="email"
+              type="text" // 4. Ubah tipe dari email ke text
               className="form-input"
-              placeholder="admin@gereja.com"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              placeholder="admin"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
               required
             />
           </div>
